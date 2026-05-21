@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { PROJECT_STATUSES } from '../interfaces/projectSchema'
+import GlassPanel from './GlassPanel'
 
 const inputClass =
-  'w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3.5 py-2.5 text-sm text-zinc-100 outline-none transition-colors placeholder:text-zinc-600 focus:border-indigo-500/40 focus:bg-white/[0.06] focus:ring-1 focus:ring-indigo-500/30'
+  'w-full rounded-xl border border-zinc-800 bg-zinc-900/50 px-4 py-3 text-sm text-zinc-100 outline-none backdrop-blur-sm transition-colors placeholder:text-zinc-600 focus:border-violet-500/30 focus:ring-1 focus:ring-violet-500/20'
 
 function projectToForm(project) {
   if (!project) {
@@ -45,30 +46,16 @@ function ProjectModalForm({ project, onClose, onSave }) {
 
   return (
     <>
-      <div className="mb-6 flex items-start justify-between gap-4">
-        <div>
-          <h2 id="modal-title" className="text-base font-semibold text-zinc-50">
-            {isEditing ? 'Projeyi düzenle' : 'Yeni proje'}
-          </h2>
-          <p className="mt-1 text-sm text-zinc-500">
-            {isEditing ? 'Durum ve mesai güncellemesi' : 'Freelance iş kaydı'}
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={onClose}
-          className="rounded-md p-1.5 text-zinc-500 transition-colors hover:bg-white/[0.06] hover:text-zinc-300"
-          aria-label="Kapat"
-        >
-          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
+      <p className="section-label mb-2">
+        {isEditing ? 'Projeyi Güncelle' : 'Yeni Proje'}
+      </p>
+      <h2 id="modal-title" className="mb-6 text-xl font-medium text-white">
+        {isEditing ? form.projectTitle || 'Düzenleme' : 'Kayıt oluştur'}
+      </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label htmlFor="clientName" className="mb-1.5 block text-xs font-medium text-zinc-400">
+          <label htmlFor="clientName" className="section-label mb-2 block">
             Müşteri
           </label>
           <input
@@ -84,7 +71,7 @@ function ProjectModalForm({ project, onClose, onSave }) {
         </div>
 
         <div>
-          <label htmlFor="projectTitle" className="mb-1.5 block text-xs font-medium text-zinc-400">
+          <label htmlFor="projectTitle" className="section-label mb-2 block">
             Proje
           </label>
           <input
@@ -94,14 +81,14 @@ function ProjectModalForm({ project, onClose, onSave }) {
             required
             value={form.projectTitle}
             onChange={handleChange}
-            placeholder="Kurumsal web sitesi"
+            placeholder="Kurumsal Web Sitesi"
             className={inputClass}
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label htmlFor="hourlyRate" className="mb-1.5 block text-xs font-medium text-zinc-400">
+            <label htmlFor="hourlyRate" className="section-label mb-2 block">
               Saatlik (₺)
             </label>
             <input
@@ -117,8 +104,8 @@ function ProjectModalForm({ project, onClose, onSave }) {
             />
           </div>
           <div>
-            <label htmlFor="hoursWorked" className="mb-1.5 block text-xs font-medium text-zinc-400">
-              Saat
+            <label htmlFor="hoursWorked" className="section-label mb-2 block">
+              Mesai (sa)
             </label>
             <input
               id="hoursWorked"
@@ -135,7 +122,7 @@ function ProjectModalForm({ project, onClose, onSave }) {
         </div>
 
         <div>
-          <label htmlFor="status" className="mb-1.5 block text-xs font-medium text-zinc-400">
+          <label htmlFor="status" className="section-label mb-2 block">
             Durum
           </label>
           <select
@@ -153,18 +140,15 @@ function ProjectModalForm({ project, onClose, onSave }) {
           </select>
         </div>
 
-        <div className="flex gap-2 pt-2">
+        <div className="flex gap-3 pt-4">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-lg border border-white/[0.08] px-4 py-2.5 text-sm font-medium text-zinc-400 transition-colors hover:bg-white/[0.04] hover:text-zinc-200"
+            className="flex-1 rounded-full border border-zinc-700 py-3 text-xs font-medium uppercase tracking-wider text-zinc-500 transition-colors hover:text-zinc-300"
           >
             İptal
           </button>
-          <button
-            type="submit"
-            className="flex-1 rounded-lg bg-zinc-50 px-4 py-2.5 text-sm font-medium text-zinc-950 transition-colors hover:bg-white"
-          >
+          <button type="submit" className="btn-primary flex-1">
             {isEditing ? 'Kaydet' : 'Oluştur'}
           </button>
         </div>
@@ -178,25 +162,37 @@ export default function ProjectModal({ isOpen, project, onClose, onSave }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-6"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
     >
       <button
         type="button"
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/75 backdrop-blur-md"
         onClick={onClose}
         aria-label="Kapat"
       />
 
-      <div className="relative w-full max-w-md rounded-xl border border-white/[0.08] bg-zinc-900 p-6 shadow-2xl shadow-black/50">
-        <ProjectModalForm
-          key={project?.id ?? 'new'}
-          project={project}
-          onClose={onClose}
-          onSave={onSave}
-        />
+      <div className="relative w-full max-w-md">
+        <GlassPanel innerClassName="p-8">
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute right-6 top-6 text-zinc-600 transition-colors hover:text-zinc-400"
+            aria-label="Kapat"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <ProjectModalForm
+            key={project?.id ?? 'new'}
+            project={project}
+            onClose={onClose}
+            onSave={onSave}
+          />
+        </GlassPanel>
       </div>
     </div>
   )

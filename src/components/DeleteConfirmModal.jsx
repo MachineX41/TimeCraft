@@ -1,45 +1,50 @@
+import GlassPanel from './GlassPanel'
+
 export default function DeleteConfirmModal({ project, onCancel, onConfirm }) {
   if (!project) return null
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center p-6"
       role="alertdialog"
       aria-modal="true"
       aria-labelledby="delete-dialog-title"
     >
       <button
         type="button"
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/75 backdrop-blur-md"
         onClick={onCancel}
         aria-label="İptal"
       />
 
-      <div className="relative w-full max-w-sm rounded-xl border border-white/[0.08] bg-zinc-900 p-6 shadow-2xl shadow-black/50">
-        <h2 id="delete-dialog-title" className="text-base font-semibold text-zinc-50">
-          Projeyi sil
-        </h2>
-        <p className="mt-2 text-sm text-zinc-500">
-          <span className="text-zinc-300">{project.projectTitle}</span> kalıcı olarak
-          kaldırılacak.
-        </p>
+      <div className="relative w-full max-w-sm">
+        <GlassPanel innerClassName="p-8 text-center">
+          <p className="section-label mb-4">Onay</p>
+          <h2 id="delete-dialog-title" className="text-lg font-medium text-white">
+            Projeyi sil
+          </h2>
+          <p className="mt-3 text-sm text-zinc-500">
+            <span className="text-zinc-300">{project.projectTitle}</span> kalıcı olarak
+            kaldırılacak.
+          </p>
 
-        <div className="mt-6 flex gap-2">
-          <button
-            type="button"
-            onClick={onCancel}
-            className="flex-1 rounded-lg border border-white/[0.08] px-4 py-2.5 text-sm font-medium text-zinc-400 transition-colors hover:bg-white/[0.04]"
-          >
-            Vazgeç
-          </button>
-          <button
-            type="button"
-            onClick={onConfirm}
-            className="flex-1 rounded-lg bg-red-600/90 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-600"
-          >
-            Sil
-          </button>
-        </div>
+          <div className="mt-8 flex gap-3">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="flex-1 rounded-full border border-zinc-700 py-3 text-xs font-medium uppercase tracking-wider text-zinc-500 transition-colors hover:text-zinc-300"
+            >
+              Vazgeç
+            </button>
+            <button
+              type="button"
+              onClick={onConfirm}
+              className="flex-1 rounded-full border border-zinc-600 bg-white/10 py-3 text-xs font-medium uppercase tracking-wider text-white transition-colors hover:bg-white/15"
+            >
+              Sil
+            </button>
+          </div>
+        </GlassPanel>
       </div>
     </div>
   )

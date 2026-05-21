@@ -15,16 +15,16 @@ export const PROJECT_STATUSES = ['Beklemede', 'Devam Ediyor', 'Tamamlandı']
 
 export const STATUS_STYLES = {
   Beklemede: {
-    badge: 'bg-zinc-800/80 text-zinc-400 border-zinc-700/80',
-    dot: 'bg-zinc-500',
+    badge: 'border-zinc-700 text-zinc-500 bg-transparent',
+    dot: 'bg-zinc-600',
   },
   'Devam Ediyor': {
-    badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-    dot: 'bg-amber-400',
+    badge: 'border-violet-500/30 text-violet-300 bg-violet-500/5',
+    dot: 'bg-violet-400 shadow-[0_0_6px_rgb(167_139_250/0.8)]',
   },
   Tamamlandı: {
-    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-    dot: 'bg-emerald-400',
+    badge: 'border-zinc-600 text-zinc-400 bg-transparent',
+    dot: 'bg-zinc-400',
   },
 }
 
