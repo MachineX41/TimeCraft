@@ -1,5 +1,17 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { IconPlus } from './SidebarIcons'
+
+function syncCtaPauseAngle(button) {
+  const transform = getComputedStyle(button, '::before').transform
+  if (!transform || transform === 'none') {
+    button.style.setProperty('--cta-pause-angle', '0deg')
+    return
+  }
+  const matrix = new DOMMatrix(transform)
+  let angle = Math.atan2(matrix.b, matrix.a) * (180 / Math.PI)
+  if (angle < 0) angle += 360
+  button.style.setProperty('--cta-pause-angle', `${angle}deg`)
+}
 
 const NAV_LINKS = [
   { id: 'dashboard', label: 'Dashboard', active: true },
@@ -9,6 +21,20 @@ const NAV_LINKS = [
 
 export default function Navbar({ onAddProject }) {
   const [mobileOpen, setMobileOpen] = useState(false)
+
+  const handleCtaEnter = useCallback((event) => {
+    const button = event.currentTarget
+    button.classList.add('app-navbar__cta--hover')
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => syncCtaPauseAngle(button))
+    })
+  }, [])
+
+  const handleCtaLeave = useCallback((event) => {
+    const button = event.currentTarget
+    button.classList.remove('app-navbar__cta--hover')
+    button.style.removeProperty('--cta-pause-angle')
+  }, [])
 
   return (
     <header className="app-navbar">
@@ -49,6 +75,8 @@ export default function Navbar({ onAddProject }) {
           onClick={onAddProject}
           className="app-navbar__cta"
           aria-label="Yeni proje"
+          onPointerEnter={handleCtaEnter}
+          onPointerLeave={handleCtaLeave}
         >
           <span className="app-navbar__cta-inner">
             <span className="app-navbar__cta-label">Yeni proje</span>

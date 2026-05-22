@@ -219,6 +219,12 @@ body {
   cursor: pointer;
 }
 
+@property --cta-fill-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 .app-navbar__cta::before {
   content: '';
   position: absolute;
@@ -231,7 +237,6 @@ body {
     from 0deg,
     transparent 0deg,
     transparent 106deg,
-    /* tek bütün — kalın baş → sivri kuyruk */
     #dfa989 114deg,
     #dfa989 178deg,
     #d49570 188deg,
@@ -254,6 +259,59 @@ body {
   transform: translate(-50%, -50%) rotate(0deg);
   animation: app-navbar-cta-border 4s linear infinite;
   will-change: transform;
+  transition: opacity 0.22s ease;
+}
+
+.app-navbar__cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 2.5px;
+  background: conic-gradient(
+    from var(--cta-pause-angle, 0deg),
+    #dfa989 0deg,
+    #ca7040 72deg,
+    #8b5b42 144deg,
+    #433b38 216deg,
+    #1a1c1e 288deg,
+    #dfa989 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0),
+    conic-gradient(
+      from var(--cta-pause-angle, 0deg),
+      #000 0deg,
+      #000 var(--cta-fill-angle),
+      transparent var(--cta-fill-angle)
+    );
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0),
+    conic-gradient(
+      from var(--cta-pause-angle, 0deg),
+      #000 0deg,
+      #000 var(--cta-fill-angle),
+      transparent var(--cta-fill-angle)
+    );
+  -webkit-mask-composite: xor, source-in;
+  mask-composite: exclude, intersect;
+  opacity: 0;
+  pointer-events: none;
+  --cta-fill-angle: 0deg;
+}
+
+.app-navbar__cta--hover::before {
+  animation-play-state: paused;
+  opacity: 0;
+  transition: opacity 0.2s ease 0.42s;
+}
+
+.app-navbar__cta--hover::after {
+  opacity: 1;
+  animation: app-navbar-cta-fill 0.48s ease forwards;
 }
 
 @keyframes app-navbar-cta-border {
@@ -266,13 +324,21 @@ body {
   }
 }
 
-.app-navbar__cta:hover .app-navbar__cta-inner {
-  opacity: 0.92;
+@keyframes app-navbar-cta-fill {
+  from {
+    --cta-fill-angle: 0deg;
+    opacity: 0.35;
+  }
+
+  to {
+    --cta-fill-angle: 360deg;
+    opacity: 1;
+  }
 }
 
 .app-navbar__cta-inner {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -286,13 +352,34 @@ body {
   color: #000;
   background: #fff;
   border-radius: 9999px;
-  transition: opacity 0.2s ease;
+  transition:
+    background 0.38s ease 0.22s,
+    color 0.38s ease 0.22s;
+}
+
+.app-navbar__cta--hover .app-navbar__cta-inner {
+  background: rgb(250 244 238);
+  color: #141414;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .app-navbar__cta::before {
     animation: none;
     transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .app-navbar__cta::after {
+    animation: none;
+  }
+
+  .app-navbar__cta--hover::before {
+    opacity: 0;
+    transition: none;
+  }
+
+  .app-navbar__cta--hover::after {
+    --cta-fill-angle: 360deg;
+    opacity: 1;
   }
 
   .app-navbar__cta {
