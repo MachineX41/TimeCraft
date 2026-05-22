@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { PROJECT_STATUSES } from '../interfaces/projectSchema'
+import { handleCtaPointerEnter, handleCtaPointerLeave } from '../utils/ctaButton'
 import RimPanel from './RimPanel'
 
 function projectToForm(project) {
@@ -42,103 +43,117 @@ function ProjectDrawerForm({ project, onClose, onSave }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
-      <div className="drawer-scroll space-y-10 px-8 py-8">
-        <div>
-          <label htmlFor="clientName" className="text-overline mb-2 block">
-            Müşteri
-          </label>
-          <input
-            id="clientName"
-            name="clientName"
-            type="text"
-            required
-            value={form.clientName}
-            onChange={handleChange}
-            placeholder="Şirket veya kişi adı"
-            className="field"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="projectTitle" className="text-overline mb-2 block">
-            Proje
-          </label>
-          <input
-            id="projectTitle"
-            name="projectTitle"
-            type="text"
-            required
-            value={form.projectTitle}
-            onChange={handleChange}
-            placeholder="Proje adı"
-            className="field"
-          />
-        </div>
-
-        <div className="grid grid-cols-2 gap-8">
-          <div>
-            <label htmlFor="hourlyRate" className="text-overline mb-2 block">
-              Saatlik ücret
+    <form onSubmit={handleSubmit} className="drawer-form">
+      <div className="drawer-scroll drawer-body">
+        <section className="drawer-section">
+          <div className="drawer-field">
+            <label htmlFor="clientName" className="drawer-label">
+              Müşteri
             </label>
             <input
-              id="hourlyRate"
-              name="hourlyRate"
-              type="number"
-              min="0"
-              step="1"
+              id="clientName"
+              name="clientName"
+              type="text"
               required
-              value={form.hourlyRate}
+              value={form.clientName}
               onChange={handleChange}
-              className="field"
+              placeholder="Şirket veya kişi adı"
+              className="drawer-input"
             />
           </div>
-          <div>
-            <label htmlFor="hoursWorked" className="text-overline mb-2 block">
-              Mesai (saat)
+
+          <div className="drawer-field">
+            <label htmlFor="projectTitle" className="drawer-label">
+              Proje
             </label>
             <input
-              id="hoursWorked"
-              name="hoursWorked"
-              type="number"
-              min="0"
-              step="0.5"
+              id="projectTitle"
+              name="projectTitle"
+              type="text"
               required
-              value={form.hoursWorked}
+              value={form.projectTitle}
               onChange={handleChange}
-              className="field"
+              placeholder="Proje adı"
+              className="drawer-input"
             />
           </div>
-        </div>
+        </section>
 
-        <div>
-          <label htmlFor="status" className="text-overline mb-2 block">
-            Durum
-          </label>
-          <select
-            id="status"
-            name="status"
-            value={form.status}
-            onChange={handleChange}
-            className="field-select"
-          >
-            {PROJECT_STATUSES.map((status) => (
-              <option key={status} value={status} className="bg-[#0A0A0A]">
-                {status}
-              </option>
-            ))}
-          </select>
-        </div>
+        <section className="drawer-section">
+          <p className="drawer-section-title">Ücret ve süre</p>
+          <div className="drawer-field-grid">
+            <div className="drawer-field">
+              <label htmlFor="hourlyRate" className="drawer-label">
+                Saatlik ücret
+              </label>
+              <input
+                id="hourlyRate"
+                name="hourlyRate"
+                type="number"
+                min="0"
+                step="1"
+                required
+                value={form.hourlyRate}
+                onChange={handleChange}
+                className="drawer-input"
+              />
+            </div>
+            <div className="drawer-field">
+              <label htmlFor="hoursWorked" className="drawer-label">
+                Mesai (saat)
+              </label>
+              <input
+                id="hoursWorked"
+                name="hoursWorked"
+                type="number"
+                min="0"
+                step="0.5"
+                required
+                value={form.hoursWorked}
+                onChange={handleChange}
+                className="drawer-input"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="drawer-section">
+          <div className="drawer-field">
+            <label htmlFor="status" className="drawer-label">
+              Durum
+            </label>
+            <select
+              id="status"
+              name="status"
+              value={form.status}
+              onChange={handleChange}
+              className="drawer-input drawer-select"
+            >
+              {PROJECT_STATUSES.map((status) => (
+                <option key={status} value={status} className="bg-[#0A0A0A]">
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
+        </section>
       </div>
 
-      <div className="shrink-0 flex gap-3 border-t border-white/[0.06] px-8 py-6">
-        <button type="button" onClick={onClose} className="btn-ghost flex-1">
+      <footer className="drawer-footer">
+        <button type="button" onClick={onClose} className="drawer-btn drawer-btn--ghost">
           İptal
         </button>
-        <button type="submit" className="btn-primary flex-1">
-          {isEditing ? 'Kaydet' : 'Oluştur'}
+        <button
+          type="submit"
+          className="app-navbar__cta drawer-footer__cta"
+          onPointerEnter={handleCtaPointerEnter}
+          onPointerLeave={handleCtaPointerLeave}
+        >
+          <span className="app-navbar__cta-inner">
+            {isEditing ? 'Kaydet' : 'Oluştur'}
+          </span>
         </button>
-      </div>
+      </footer>
     </form>
   )
 }
@@ -171,20 +186,25 @@ export default function ProjectDrawer({ isOpen, project, onClose, onSave }) {
         aria-labelledby="drawer-title"
         className={`drawer-panel ${isOpen ? 'drawer-panel--open' : ''}`}
       >
-        <RimPanel variant="drawer" className="h-full" innerClassName="flex min-h-full flex-col">
-          <header className="shrink-0 border-b border-white/[0.06] px-8 py-8">
+        <RimPanel variant="drawer" className="drawer-panel__rim h-full" innerClassName="drawer-panel__inner">
+          <header className="drawer-header">
             <button
               type="button"
               onClick={onClose}
-              className="btn-text mb-6"
+              className="drawer-close"
               aria-label="Kapat"
             >
-              Kapat
+              <span aria-hidden>×</span>
             </button>
-            <p className="text-overline mb-2">{isEditing ? 'Düzenle' : 'Yeni kayıt'}</p>
-            <h2 id="drawer-title" className="text-2xl font-medium tracking-tight text-white">
+            <p className="drawer-eyebrow">{isEditing ? 'Düzenle' : 'Yeni kayıt'}</p>
+            <h2 id="drawer-title" className="drawer-title">
               {isEditing ? project?.projectTitle || 'Proje' : 'Proje ekle'}
             </h2>
+            <p className="drawer-caption">
+              {isEditing
+                ? 'Proje bilgilerini güncelleyin.'
+                : 'Yeni proje için temel bilgileri girin.'}
+            </p>
           </header>
 
           <ProjectDrawerForm
