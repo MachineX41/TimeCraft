@@ -213,25 +213,65 @@ body {
   padding: 2.5px;
   border: none;
   border-radius: 9999px;
-  background: linear-gradient(
-    225deg,
-    var(--color-rim-1) 0%,
-    var(--color-rim-2) 18%,
-    var(--color-rim-3) 34%,
-    var(--color-rim-4) 48%,
-    var(--color-rim-5) 58%,
-    #fff 82%,
-    #fff 100%
-  );
+  background: #fff;
+  overflow: hidden;
+  isolation: isolate;
   cursor: pointer;
-  transition: opacity 0.2s ease;
 }
 
-.app-navbar__cta:hover {
+.app-navbar__cta::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: 250%;
+  aspect-ratio: 1;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 178deg,
+    rgb(67 59 56 / 0.05) 188deg,
+    rgb(67 59 56 / 0.14) 198deg,
+    rgb(139 91 66 / 0.35) 206deg,
+    var(--color-rim-5) 214deg,
+    var(--color-rim-4) 234deg,
+    var(--color-rim-3) 254deg,
+    var(--color-rim-2) 272deg,
+    var(--color-rim-1) 290deg,
+    var(--color-rim-1) 304deg,
+    var(--color-rim-2) 316deg,
+    var(--color-rim-3) 328deg,
+    var(--color-rim-4) 338deg,
+    var(--color-rim-5) 346deg,
+    rgb(223 169 137 / 0.35) 350deg,
+    rgb(223 169 137 / 0.16) 354deg,
+    rgb(67 59 56 / 0.08) 358deg,
+    transparent 360deg
+  );
+  filter: blur(0.65px);
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: app-navbar-cta-border 4s linear infinite;
+  will-change: transform;
+}
+
+@keyframes app-navbar-cta-border {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.app-navbar__cta:hover .app-navbar__cta-inner {
   opacity: 0.92;
 }
 
 .app-navbar__cta-inner {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -245,6 +285,27 @@ body {
   color: #000;
   background: #fff;
   border-radius: 9999px;
+  transition: opacity 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-navbar__cta::before {
+    animation: none;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .app-navbar__cta {
+    background: linear-gradient(
+      225deg,
+      var(--color-rim-1) 0%,
+      var(--color-rim-2) 18%,
+      var(--color-rim-3) 34%,
+      var(--color-rim-4) 48%,
+      var(--color-rim-5) 58%,
+      #fff 82%,
+      #fff 100%
+    );
+  }
 }
 
 .app-navbar__cta-icon {
