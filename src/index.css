@@ -230,26 +230,27 @@ body {
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    transparent 178deg,
-    rgb(67 59 56 / 0.05) 188deg,
-    rgb(67 59 56 / 0.14) 198deg,
-    rgb(139 91 66 / 0.35) 206deg,
-    var(--color-rim-5) 214deg,
-    var(--color-rim-4) 234deg,
-    var(--color-rim-3) 254deg,
-    var(--color-rim-2) 272deg,
-    var(--color-rim-1) 290deg,
-    var(--color-rim-1) 304deg,
-    var(--color-rim-2) 316deg,
-    var(--color-rim-3) 328deg,
-    var(--color-rim-4) 338deg,
-    var(--color-rim-5) 346deg,
-    rgb(223 169 137 / 0.35) 350deg,
-    rgb(223 169 137 / 0.16) 354deg,
-    rgb(67 59 56 / 0.08) 358deg,
+    transparent 106deg,
+    /* tek bütün — kalın baş → sivri kuyruk */
+    #dfa989 114deg,
+    #dfa989 178deg,
+    #d49570 188deg,
+    #ca7040 198deg,
+    #b8734e 208deg,
+    #8b5b42 218deg,
+    #7a5244 228deg,
+    #615041 238deg,
+    #433b38 248deg,
+    #322c28 256deg,
+    #1a1c1e 264deg,
+    rgb(26 28 30 / 0.72) 272deg,
+    rgb(26 28 30 / 0.38) 278deg,
+    rgb(26 28 30 / 0.14) 284deg,
+    rgb(26 28 30 / 0.04) 288deg,
+    transparent 292deg,
     transparent 360deg
   );
-  filter: blur(0.65px);
+  filter: blur(0.5px);
   transform: translate(-50%, -50%) rotate(0deg);
   animation: app-navbar-cta-border 4s linear infinite;
   will-change: transform;
