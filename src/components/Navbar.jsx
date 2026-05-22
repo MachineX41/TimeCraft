@@ -25,9 +25,8 @@ export default function Navbar({ onAddProject }) {
   const handleCtaEnter = useCallback((event) => {
     const button = event.currentTarget
     button.classList.add('app-navbar__cta--hover')
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => syncCtaPauseAngle(button))
-    })
+    syncCtaPauseAngle(button)
+    requestAnimationFrame(() => syncCtaPauseAngle(button))
   }, [])
 
   const handleCtaLeave = useCallback((event) => {

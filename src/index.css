@@ -208,6 +208,12 @@ body {
   flex-shrink: 0;
 }
 
+@property --cta-fill-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 .app-navbar__cta {
   position: relative;
   padding: 2.5px;
@@ -217,12 +223,7 @@ body {
   overflow: hidden;
   isolation: isolate;
   cursor: pointer;
-}
-
-@property --cta-fill-angle {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 0deg;
+  --cta-fill-start: calc(var(--cta-pause-angle, 0deg) + 114deg);
 }
 
 .app-navbar__cta::before {
@@ -258,8 +259,8 @@ body {
   filter: blur(0.5px);
   transform: translate(-50%, -50%) rotate(0deg);
   animation: app-navbar-cta-border 4s linear infinite;
-  will-change: transform;
-  transition: opacity 0.22s ease;
+  will-change: transform, opacity;
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .app-navbar__cta::after {
@@ -269,20 +270,26 @@ body {
   z-index: 2;
   border-radius: inherit;
   padding: 2.5px;
+  --cta-fill-angle: 0deg;
   background: conic-gradient(
-    from var(--cta-pause-angle, 0deg),
+    from var(--cta-fill-start, 0deg),
     #dfa989 0deg,
+    #d49570 36deg,
     #ca7040 72deg,
+    #a36249 108deg,
     #8b5b42 144deg,
+    #6f4f41 180deg,
     #433b38 216deg,
+    #2f2926 252deg,
     #1a1c1e 288deg,
+    #2f2926 324deg,
     #dfa989 360deg
   );
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0),
     conic-gradient(
-      from var(--cta-pause-angle, 0deg),
+      from var(--cta-fill-start, 0deg),
       #000 0deg,
       #000 var(--cta-fill-angle),
       transparent var(--cta-fill-angle)
@@ -291,7 +298,7 @@ body {
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0),
     conic-gradient(
-      from var(--cta-pause-angle, 0deg),
+      from var(--cta-fill-start, 0deg),
       #000 0deg,
       #000 var(--cta-fill-angle),
       transparent var(--cta-fill-angle)
@@ -300,18 +307,17 @@ body {
   mask-composite: exclude, intersect;
   opacity: 0;
   pointer-events: none;
-  --cta-fill-angle: 0deg;
 }
 
 .app-navbar__cta--hover::before {
   animation-play-state: paused;
   opacity: 0;
-  transition: opacity 0.2s ease 0.42s;
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.68s;
 }
 
 .app-navbar__cta--hover::after {
   opacity: 1;
-  animation: app-navbar-cta-fill 0.48s ease forwards;
+  animation: app-navbar-cta-fill 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes app-navbar-cta-border {
@@ -327,7 +333,11 @@ body {
 @keyframes app-navbar-cta-fill {
   from {
     --cta-fill-angle: 0deg;
-    opacity: 0.35;
+    opacity: 0;
+  }
+
+  6% {
+    opacity: 0.5;
   }
 
   to {
@@ -353,13 +363,25 @@ body {
   background: #fff;
   border-radius: 9999px;
   transition:
-    background 0.38s ease 0.22s,
-    color 0.38s ease 0.22s;
+    background 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .app-navbar__cta--hover .app-navbar__cta-inner {
   background: rgb(250 244 238);
   color: #141414;
+  transition-delay: 0.38s;
+}
+
+.app-navbar__cta:not(.app-navbar__cta--hover) .app-navbar__cta-inner {
+  transition-delay: 0s;
+}
+
+.app-navbar__cta:not(.app-navbar__cta--hover)::after {
+  animation: none;
+  --cta-fill-angle: 0deg;
+  opacity: 0;
+  transition: opacity 0.42s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -380,6 +402,7 @@ body {
   .app-navbar__cta--hover::after {
     --cta-fill-angle: 360deg;
     opacity: 1;
+    animation: none;
   }
 
   .app-navbar__cta {
