@@ -1,8 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
-import Sidebar from '../components/Sidebar'
 import RimPanel from '../components/RimPanel'
-import { loadSidebarCollapsed, saveSidebarCollapsed } from '../utils/sidebarStorage'
 import MetricsRow from '../components/MetricsRow'
 import ProjectTable from '../components/ProjectTable'
 import ProjectDrawer from '../components/ProjectDrawer'
@@ -22,39 +19,11 @@ export default function Dashboard({
   onCloseModal,
   onSaveProject,
 }) {
-  const [collapsed, setCollapsed] = useState(loadSidebarCollapsed)
-  const [mobileOpen, setMobileOpen] = useState(false)
-
-  useEffect(() => {
-    saveSidebarCollapsed(collapsed)
-  }, [collapsed])
-
-  const toggleCollapsed = useCallback(() => setCollapsed((p) => !p), [])
-  const openMobileMenu = useCallback(() => setMobileOpen(true), [])
-  const closeMobileMenu = useCallback(() => setMobileOpen(false), [])
-
-  const handleAddProject = useCallback(() => {
-    closeMobileMenu()
-    onAddProject()
-  }, [onAddProject, closeMobileMenu])
-
   return (
     <div className="app-bg min-h-screen font-sans text-white antialiased">
-      <Sidebar
-        collapsed={collapsed}
-        onToggle={toggleCollapsed}
-        onAddProject={handleAddProject}
-        mobileOpen={mobileOpen}
-        onMobileClose={closeMobileMenu}
-      />
+      <Navbar onAddProject={onAddProject} />
 
-      <div
-        className={`flex min-h-screen flex-col transition-[margin] duration-300 ease-out ${
-          collapsed ? 'lg:ml-[72px]' : 'lg:ml-60'
-        }`}
-      >
-        <Navbar onMenuClick={openMobileMenu} onAddProject={handleAddProject} />
-
+      <div className="flex min-h-screen flex-col pt-14">
         <main className="flex-1 px-6 py-10 lg:px-12 lg:py-14">
           <div className="mx-auto max-w-5xl">
             <p className="text-overline mb-3">Freelancer workspace</p>
@@ -69,14 +38,14 @@ export default function Dashboard({
                 projects={projects}
                 onEdit={onEditProject}
                 onDelete={onRequestDelete}
-                onAddProject={handleAddProject}
+                onAddProject={onAddProject}
               />
             </RimPanel>
           </div>
         </main>
       </div>
 
-      <Footer collapsed={collapsed} />
+      <Footer />
 
       <ProjectDrawer
         isOpen={modalOpen}
