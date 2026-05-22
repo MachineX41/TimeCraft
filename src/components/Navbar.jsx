@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { IconLogo, IconPlus } from './SidebarIcons'
+import { IconPlus } from './SidebarIcons'
 
 const NAV_LINKS = [
   { id: 'dashboard', label: 'Dashboard', active: true },
@@ -13,10 +13,14 @@ export default function Navbar({ onAddProject }) {
   return (
     <header className="app-navbar">
       <a href="#" className="app-navbar__brand" aria-label="TimeCraft ana sayfa">
-        <span className="app-navbar__logo">
-          <IconLogo className="h-5 w-5" />
-        </span>
-        <span className="app-navbar__wordmark">TimeCraft</span>
+        <img
+          src="/timecraftlogo.svg"
+          alt=""
+          className="app-navbar__logo-img"
+          width={320}
+          height={293}
+          decoding="async"
+        />
       </a>
 
       <nav
