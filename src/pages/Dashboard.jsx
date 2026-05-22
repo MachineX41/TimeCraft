@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
+import RimPanel from '../components/RimPanel'
 import { loadSidebarCollapsed, saveSidebarCollapsed } from '../utils/sidebarStorage'
-import InsightsPanel from '../components/InsightsPanel'
+import MetricsRow from '../components/MetricsRow'
 import ProjectTable from '../components/ProjectTable'
 import ProjectDrawer from '../components/ProjectDrawer'
 import DeleteConfirmModal from '../components/DeleteConfirmModal'
+import Footer from '../components/Footer'
 
 export default function Dashboard({
   projects,
@@ -27,17 +29,9 @@ export default function Dashboard({
     saveSidebarCollapsed(collapsed)
   }, [collapsed])
 
-  const toggleCollapsed = useCallback(() => {
-    setCollapsed((prev) => !prev)
-  }, [])
-
-  const openMobileMenu = useCallback(() => {
-    setMobileOpen(true)
-  }, [])
-
-  const closeMobileMenu = useCallback(() => {
-    setMobileOpen(false)
-  }, [])
+  const toggleCollapsed = useCallback(() => setCollapsed((p) => !p), [])
+  const openMobileMenu = useCallback(() => setMobileOpen(true), [])
+  const closeMobileMenu = useCallback(() => setMobileOpen(false), [])
 
   const handleAddProject = useCallback(() => {
     closeMobileMenu()
@@ -45,7 +39,7 @@ export default function Dashboard({
   }, [onAddProject, closeMobileMenu])
 
   return (
-    <div className="app-shell relative min-h-screen bg-[#050505] font-sans antialiased">
+    <div className="app-bg min-h-screen font-sans text-white antialiased">
       <Sidebar
         collapsed={collapsed}
         onToggle={toggleCollapsed}
@@ -55,28 +49,34 @@ export default function Dashboard({
       />
 
       <div
-        className={`relative z-10 flex min-h-screen flex-col transition-[margin] duration-300 ease-in-out ${
-          collapsed ? 'lg:ml-[72px]' : 'lg:ml-64'
+        className={`flex min-h-screen flex-col transition-[margin] duration-300 ease-out ${
+          collapsed ? 'lg:ml-[72px]' : 'lg:ml-60'
         }`}
       >
         <Navbar onMenuClick={openMobileMenu} onAddProject={handleAddProject} />
 
-        <main className="flex-1 p-6 lg:p-8">
-          <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-            <div className="xl:col-span-2">
+        <main className="flex-1 px-6 py-10 lg:px-12 lg:py-14">
+          <div className="mx-auto max-w-5xl">
+            <p className="text-overline mb-3">Freelancer workspace</p>
+            <h1 className="text-display mb-4">Projeler</h1>
+            <p className="text-caption mb-10 max-w-xl">
+              Zaman, ücret ve durum takibini tek bir minimal panelden yönetin.
+            </p>
+
+            <RimPanel innerClassName="px-6 py-8 lg:px-8 lg:py-10">
+              <MetricsRow projects={projects} />
               <ProjectTable
                 projects={projects}
                 onEdit={onEditProject}
                 onDelete={onRequestDelete}
                 onAddProject={handleAddProject}
               />
-            </div>
-            <div className="xl:col-span-1">
-              <InsightsPanel projects={projects} />
-            </div>
+            </RimPanel>
           </div>
         </main>
       </div>
+
+      <Footer collapsed={collapsed} />
 
       <ProjectDrawer
         isOpen={modalOpen}
