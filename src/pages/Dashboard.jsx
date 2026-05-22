@@ -23,7 +23,7 @@ export default function Dashboard({
     <div className="app-bg min-h-screen font-sans text-white antialiased">
       <Navbar onAddProject={onAddProject} />
 
-      <div className="flex min-h-screen flex-col pt-14">
+      <div className="flex min-h-screen flex-col pt-[4.25rem]">
         <main className="flex-1 px-6 py-10 lg:px-12 lg:py-14">
           <div className="mx-auto max-w-5xl">
             <p className="text-overline mb-3">Freelancer workspace</p>

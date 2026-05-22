@@ -50,8 +50,10 @@ export default function Navbar({ onAddProject }) {
           className="app-navbar__cta"
           aria-label="Yeni proje"
         >
-          <span className="app-navbar__cta-label">Yeni proje</span>
-          <IconPlus className="app-navbar__cta-icon h-4 w-4 md:hidden" />
+          <span className="app-navbar__cta-inner">
+            <span className="app-navbar__cta-label">Yeni proje</span>
+            <IconPlus className="app-navbar__cta-icon h-4 w-4 md:hidden" />
+          </span>
         </button>
 
         <button
