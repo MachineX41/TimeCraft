@@ -3,6 +3,8 @@ import { PROJECT_STATUSES } from '../interfaces/projectSchema'
 import { handleCtaPointerEnter, handleCtaPointerLeave } from '../utils/ctaButton'
 import RimPanel from './RimPanel'
 
+const DRAWER_CLOSE_MS = 680
+
 function projectToForm(project) {
   if (!project) {
     return {
@@ -45,7 +47,7 @@ function ProjectDrawerForm({ project, onClose, onSave }) {
   return (
     <form onSubmit={handleSubmit} className="drawer-form">
       <div className="drawer-scroll drawer-body">
-        <section className="drawer-section">
+        <section className="drawer-section drawer-surface">
           <div className="drawer-field">
             <label htmlFor="clientName" className="drawer-label">
               Müşteri
@@ -79,7 +81,7 @@ function ProjectDrawerForm({ project, onClose, onSave }) {
           </div>
         </section>
 
-        <section className="drawer-section">
+        <section className="drawer-section drawer-surface">
           <p className="drawer-section-title">Ücret ve süre</p>
           <div className="drawer-field-grid">
             <div className="drawer-field">
@@ -96,6 +98,7 @@ function ProjectDrawerForm({ project, onClose, onSave }) {
                 value={form.hourlyRate}
                 onChange={handleChange}
                 className="drawer-input"
+                placeholder="0"
               />
             </div>
             <div className="drawer-field">
@@ -112,12 +115,13 @@ function ProjectDrawerForm({ project, onClose, onSave }) {
                 value={form.hoursWorked}
                 onChange={handleChange}
                 className="drawer-input"
+                placeholder="0"
               />
             </div>
           </div>
         </section>
 
-        <section className="drawer-section">
+        <section className="drawer-section drawer-surface">
           <div className="drawer-field">
             <label htmlFor="status" className="drawer-label">
               Durum
@@ -160,50 +164,74 @@ function ProjectDrawerForm({ project, onClose, onSave }) {
 
 export default function ProjectDrawer({ isOpen, project, onClose, onSave }) {
   const isEditing = Boolean(project)
+  const [mounted, setMounted] = useState(false)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : ''
-    return () => {
-      document.body.style.overflow = ''
+    if (isOpen) {
+      setMounted(true)
+      const frame = requestAnimationFrame(() => {
+        requestAnimationFrame(() => setVisible(true))
+      })
+      return () => cancelAnimationFrame(frame)
     }
+
+    setVisible(false)
+    const timer = window.setTimeout(() => setMounted(false), DRAWER_CLOSE_MS)
+    return () => window.clearTimeout(timer)
   }, [isOpen])
 
   useEffect(() => {
+    document.body.style.overflow = mounted ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mounted, visible])
+
+  useEffect(() => {
     function onKeyDown(e) {
-      if (e.key === 'Escape' && isOpen) onClose()
+      if (e.key === 'Escape' && visible) onClose()
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [isOpen, onClose])
+  }, [visible, onClose])
+
+  if (!mounted) return null
 
   return (
-    <div className={`drawer-root fixed inset-0 z-[70] ${isOpen ? 'drawer-root--open' : ''}`}>
+    <div
+      className={`drawer-root drawer-root--mounted ${visible ? 'drawer-root--open' : ''}`}
+      aria-hidden={!visible}
+    >
       <button type="button" className="drawer-backdrop" onClick={onClose} aria-label="Kapat" />
 
       <aside
         role="dialog"
         aria-modal="true"
         aria-labelledby="drawer-title"
-        className={`drawer-panel ${isOpen ? 'drawer-panel--open' : ''}`}
+        className={`drawer-panel ${visible ? 'drawer-panel--open' : ''}`}
       >
         <RimPanel variant="drawer" className="drawer-panel__rim h-full" innerClassName="drawer-panel__inner">
           <header className="drawer-header">
-            <button
-              type="button"
-              onClick={onClose}
-              className="drawer-close"
-              aria-label="Kapat"
-            >
-              <span aria-hidden>×</span>
-            </button>
-            <p className="drawer-eyebrow">{isEditing ? 'Düzenle' : 'Yeni kayıt'}</p>
+            <div className="drawer-header__row">
+              <span className="drawer-badge">{isEditing ? 'Düzenleme' : 'Yeni'}</span>
+              <button
+                type="button"
+                onClick={onClose}
+                className="drawer-close"
+                aria-label="Kapat"
+              >
+                <span aria-hidden>×</span>
+              </button>
+            </div>
+            <p className="drawer-eyebrow">{isEditing ? 'Proje kaydı' : 'Yeni kayıt'}</p>
             <h2 id="drawer-title" className="drawer-title">
               {isEditing ? project?.projectTitle || 'Proje' : 'Proje ekle'}
             </h2>
             <p className="drawer-caption">
               {isEditing
-                ? 'Proje bilgilerini güncelleyin.'
-                : 'Yeni proje için temel bilgileri girin.'}
+                ? 'Alanları güncelleyip kaydedin.'
+                : 'Temel bilgileri doldurarak projeyi oluşturun.'}
             </p>
           </header>
 

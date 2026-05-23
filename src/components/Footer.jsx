@@ -69,9 +69,6 @@ export default function Footer() {
       />
       <div className="site-footer__inner">
         <div className="site-footer__content">
-          <p className="site-footer__tagline">
-            Proje ve zaman yönetimi — ekipleriniz için tek merkez.
-          </p>
           <div className="site-footer__grid">
             {FOOTER_COLUMNS.map((column) => (
               <div key={column.title} className="site-footer__col">
@@ -87,23 +84,6 @@ export default function Footer() {
                 </ul>
               </div>
             ))}
-          </div>
-          <div className="site-footer__bottom">
-            <p className="site-footer__copy">© 2026 TimeCraft. Tüm hakları saklıdır.</p>
-            <nav className="site-footer__meta" aria-label="Footer ek bağlantılar">
-              <a href="#" className="site-footer__meta-link">
-                Durum
-              </a>
-              <a href="#" className="site-footer__meta-link">
-                Sürüm notları
-              </a>
-              <a href="#" className="site-footer__meta-link">
-                Destek
-              </a>
-              <a href="#" className="site-footer__meta-link">
-                Türkçe
-              </a>
-            </nav>
           </div>
         </div>
       </div>
