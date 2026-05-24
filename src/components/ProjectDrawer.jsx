@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react'
 import { PROJECT_STATUSES } from '../interfaces/projectSchema'
 import { handleCtaPointerEnter, handleCtaPointerLeave } from '../utils/ctaButton'
-import RimPanel from './RimPanel'
-
-const DRAWER_CLOSE_MS = 680
 
 function projectToForm(project) {
   if (!project) {
@@ -47,7 +44,7 @@ function ProjectDrawerForm({ project, onClose, onSave }) {
   return (
     <form onSubmit={handleSubmit} className="drawer-form">
       <div className="drawer-scroll drawer-body">
-        <section className="drawer-section drawer-surface">
+        <section className="drawer-section">
           <div className="drawer-field">
             <label htmlFor="clientName" className="drawer-label">
               Müşteri
@@ -81,8 +78,7 @@ function ProjectDrawerForm({ project, onClose, onSave }) {
           </div>
         </section>
 
-        <section className="drawer-section drawer-surface">
-          <p className="drawer-section-title">Ücret ve süre</p>
+        <section className="drawer-section">
           <div className="drawer-field-grid">
             <div className="drawer-field">
               <label htmlFor="hourlyRate" className="drawer-label">
@@ -121,7 +117,7 @@ function ProjectDrawerForm({ project, onClose, onSave }) {
           </div>
         </section>
 
-        <section className="drawer-section drawer-surface">
+        <section className="drawer-section">
           <div className="drawer-field">
             <label htmlFor="status" className="drawer-label">
               Durum
@@ -162,59 +158,55 @@ function ProjectDrawerForm({ project, onClose, onSave }) {
   )
 }
 
-export default function ProjectDrawer({ isOpen, project, onClose, onSave }) {
+export default function ProjectDrawer({ isOpen, project, onOpen, onClose, onSave }) {
   const isEditing = Boolean(project)
-  const [mounted, setMounted] = useState(false)
-  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    if (isOpen) {
-      setMounted(true)
-      const frame = requestAnimationFrame(() => {
-        requestAnimationFrame(() => setVisible(true))
-      })
-      return () => cancelAnimationFrame(frame)
-    }
-
-    setVisible(false)
-    const timer = window.setTimeout(() => setMounted(false), DRAWER_CLOSE_MS)
-    return () => window.clearTimeout(timer)
-  }, [isOpen])
-
-  useEffect(() => {
-    document.body.style.overflow = mounted ? 'hidden' : ''
+    document.body.style.overflow = isOpen ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
-  }, [mounted, visible])
+  }, [isOpen])
 
   useEffect(() => {
     function onKeyDown(e) {
-      if (e.key === 'Escape' && visible) onClose()
+      if (e.key === 'Escape' && isOpen) onClose()
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [visible, onClose])
-
-  if (!mounted) return null
+  }, [isOpen, onClose])
 
   return (
-    <div
-      className={`drawer-root drawer-root--mounted ${visible ? 'drawer-root--open' : ''}`}
-      aria-hidden={!visible}
-    >
-      <button type="button" className="drawer-backdrop" onClick={onClose} aria-label="Kapat" />
+    <div className={`drawer-root ${isOpen ? 'drawer-root--open' : ''}`}>
+      <button
+        type="button"
+        className="drawer-backdrop"
+        onClick={onClose}
+        aria-label="Kapat"
+        tabIndex={isOpen ? 0 : -1}
+      />
 
       <aside
         role="dialog"
-        aria-modal="true"
+        aria-modal={isOpen}
         aria-labelledby="drawer-title"
-        className={`drawer-panel ${visible ? 'drawer-panel--open' : ''}`}
+        className={`drawer-panel ${isOpen ? 'drawer-panel--open' : ''}`}
       >
-        <RimPanel variant="drawer" className="drawer-panel__rim h-full" innerClassName="drawer-panel__inner">
+        <button
+          type="button"
+          className="drawer-rail"
+          aria-label="Yeni proje ekle"
+          onClick={onOpen}
+        >
+          <span className="drawer-rail__label">Yeni proje ekle</span>
+        </button>
+
+        <div className="drawer-panel__body">
           <header className="drawer-header">
             <div className="drawer-header__row">
-              <span className="drawer-badge">{isEditing ? 'Düzenleme' : 'Yeni'}</span>
+              <h2 id="drawer-title" className="drawer-title">
+                {isEditing ? project?.projectTitle || 'Proje düzenle' : 'Yeni proje'}
+              </h2>
               <button
                 type="button"
                 onClick={onClose}
@@ -224,15 +216,6 @@ export default function ProjectDrawer({ isOpen, project, onClose, onSave }) {
                 <span aria-hidden>×</span>
               </button>
             </div>
-            <p className="drawer-eyebrow">{isEditing ? 'Proje kaydı' : 'Yeni kayıt'}</p>
-            <h2 id="drawer-title" className="drawer-title">
-              {isEditing ? project?.projectTitle || 'Proje' : 'Proje ekle'}
-            </h2>
-            <p className="drawer-caption">
-              {isEditing
-                ? 'Alanları güncelleyip kaydedin.'
-                : 'Temel bilgileri doldurarak projeyi oluşturun.'}
-            </p>
           </header>
 
           <ProjectDrawerForm
@@ -241,7 +224,7 @@ export default function ProjectDrawer({ isOpen, project, onClose, onSave }) {
             onClose={onClose}
             onSave={onSave}
           />
-        </RimPanel>
+        </div>
       </aside>
     </div>
   )

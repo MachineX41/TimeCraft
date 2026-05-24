@@ -50,6 +50,7 @@ export default function Dashboard({
       <ProjectDrawer
         isOpen={modalOpen}
         project={editingProject}
+        onOpen={onAddProject}
         onClose={onCloseModal}
         onSave={onSaveProject}
       />
