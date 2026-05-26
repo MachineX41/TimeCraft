@@ -21,11 +21,11 @@
   --color-x-bg: #0a0a0a;
   --color-x-muted: #a3a3a3;
   --color-x-border: rgb(255 255 255 / 0.08);
-  --color-rim-1: #dfa989;
-  --color-rim-2: #ca7040;
-  --color-rim-3: #8b5b42;
-  --color-rim-4: #433b38;
-  --color-rim-5: #1a1c1e;
+  --color-rim-1: #00a6f4;
+  --color-rim-2: #3c62d1;
+  --color-rim-3: #3b3a9c;
+  --color-rim-4: #24235d;
+  --color-rim-5: #0a0a0a;
 }
 
 html {
@@ -48,7 +48,7 @@ body {
   background: var(--color-x-bg);
 }
 
-/* border: #DFA989 → #CA7040 → #8B5B42 → #433B38 → #1A1C1E (iç yüzey siyah) */
+/* border: #00A6F4 → #3C62D1 → #3B3A9C → #24235D → #0A0A0A */
 .rim-panel {
   position: relative;
   border-radius: 14px;
@@ -238,21 +238,20 @@ body {
     from 0deg,
     transparent 0deg,
     transparent 106deg,
-    #dfa989 114deg,
-    #dfa989 178deg,
-    #d49570 188deg,
-    #ca7040 198deg,
-    #b8734e 208deg,
-    #8b5b42 218deg,
-    #7a5244 228deg,
-    #615041 238deg,
-    #433b38 248deg,
-    #322c28 256deg,
-    #1a1c1e 264deg,
-    rgb(26 28 30 / 0.72) 272deg,
-    rgb(26 28 30 / 0.38) 278deg,
-    rgb(26 28 30 / 0.14) 284deg,
-    rgb(26 28 30 / 0.04) 288deg,
+    #00a6f4 114deg,
+    #00a6f4 178deg,
+    #2b8fe8 188deg,
+    #3c62d1 198deg,
+    #3a4eb4 208deg,
+    #3b3a9c 218deg,
+    #302f7a 228deg,
+    #24235d 248deg,
+    #181730 256deg,
+    #0a0a0a 264deg,
+    rgb(10 10 10 / 0.72) 272deg,
+    rgb(10 10 10 / 0.38) 278deg,
+    rgb(10 10 10 / 0.14) 284deg,
+    rgb(10 10 10 / 0.04) 288deg,
     transparent 292deg,
     transparent 360deg
   );
@@ -273,17 +272,17 @@ body {
   --cta-fill-angle: 0deg;
   background: conic-gradient(
     from var(--cta-fill-start, 0deg),
-    #dfa989 0deg,
-    #d49570 36deg,
-    #ca7040 72deg,
-    #a36249 108deg,
-    #8b5b42 144deg,
-    #6f4f41 180deg,
-    #433b38 216deg,
-    #2f2926 252deg,
-    #1a1c1e 288deg,
-    #2f2926 324deg,
-    #dfa989 360deg
+    #00a6f4 0deg,
+    #2a8fe8 36deg,
+    #3c62d1 72deg,
+    #3a4eb4 108deg,
+    #3b3a9c 144deg,
+    #2f2e7a 180deg,
+    #24235d 216deg,
+    #181730 252deg,
+    #0a0a0a 288deg,
+    #181730 324deg,
+    #00a6f4 360deg
   );
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
@@ -368,8 +367,8 @@ body {
 }
 
 .app-navbar__cta--hover .app-navbar__cta-inner {
-  background: rgb(250 244 238);
-  color: #141414;
+  background: rgb(236 244 255);
+  color: #0a0a0a;
   transition-delay: 0.38s;
 }
 
@@ -861,20 +860,6 @@ body {
   margin: 0 auto clamp(5rem, 14vh, 9rem);
   flex-direction: column;
   align-items: center;
-}
-
-.site-footer__logo {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  transform: translateX(-50%) translateY(22%);
-  pointer-events: none;
-  user-select: none;
 }
 
 .site-footer__grid {

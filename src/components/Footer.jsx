@@ -87,15 +87,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <img
-        src="/footerlogo.svg"
-        alt=""
-        className="site-footer__logo"
-        width={1612}
-        height={433}
-        decoding="async"
-        aria-hidden="true"
-      />
     </footer>
   )
 }
