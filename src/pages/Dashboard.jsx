@@ -22,9 +22,18 @@ export default function Dashboard({
     <div className="app-bg flex min-h-screen flex-col font-sans text-white antialiased">
       <Navbar onAddProject={onAddProject} />
 
-      <div className="flex flex-1 flex-col pt-[4.25rem]">
-        <main className="x-main flex-1">
-          <div className="x-main__container">
+      <div className="flex flex-1 flex-col">
+        <section className="x-page-header" aria-label="Sayfa başlığı">
+          <img
+            src="/header.png"
+            alt=""
+            className="x-page-header__bg"
+            width={1643}
+            height={957}
+            decoding="async"
+          />
+          <div className="x-page-header__overlay" aria-hidden="true" />
+          <div className="x-page-header__inner x-main__container">
             <header className="x-hero">
               <p className="x-hero__overline">Freelancer workspace</p>
               <h1 className="x-hero__title">Projeler</h1>
@@ -35,8 +44,12 @@ export default function Dashboard({
                 )}
               </p>
             </header>
-
             <MetricsRow projects={projects} />
+          </div>
+        </section>
+
+        <main className="x-main flex-1">
+          <div className="x-main__container">
             <ProjectTable
               projects={projects}
               onEdit={onEditProject}

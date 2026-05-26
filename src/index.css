@@ -692,10 +692,63 @@ body {
 }
 
 /* x.ai — sayfa düzeni */
+.x-page-header {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  overflow: hidden;
+  isolation: isolate;
+  background-color: #030305;
+}
+
+.x-page-header__bg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  pointer-events: none;
+}
+
+.x-page-header__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(3 3 5 / 0.35) 0%,
+    rgb(3 3 5 / 0.12) 45%,
+    rgb(3 3 5 / 0.4) 85%,
+    #030305 100%
+  );
+}
+
+.x-page-header__inner {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(2.5rem, 6vw, 4rem);
+  padding: calc(4.25rem + clamp(2rem, 5vw, 3rem)) clamp(1.5rem, 5vw, 3.5rem)
+    clamp(2rem, 5vw, 3rem);
+}
+
+.x-page-header .x-stats {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-bottom: none;
+}
+
 .x-main {
+  position: relative;
+  z-index: 0;
   flex: 1;
   background-color: #030305;
-  padding: clamp(3rem, 8vw, 5.5rem) clamp(1.5rem, 5vw, 3.5rem) clamp(4rem, 10vw, 7rem);
+  padding: clamp(2rem, 5vw, 3rem) clamp(1.5rem, 5vw, 3.5rem) clamp(4rem, 10vw, 7rem);
 }
 
 .x-main__container {
@@ -706,7 +759,7 @@ body {
 
 .x-hero {
   max-width: 40rem;
-  margin-bottom: clamp(3rem, 7vw, 5rem);
+  margin-bottom: 0;
 }
 
 .x-hero__overline {
