@@ -1,22 +1,32 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 
 export default function ColourfulText({ text, className = '' }) {
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount((prev) => prev + 1)
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <span className={`colourful-text ${className}`.trim()}>
       {text.split('').map((char, index) => (
         <motion.span
-          key={`${char}-${index}`}
+          key={`${char}-${count}-${index}`}
+          initial={{ color: '#1447E7', y: 0 }}
           animate={{
-            color: ['#ffffff', 'rgb(255 255 255 / 0.72)', '#ffffff'],
-            scale: [1, 1.04, 1],
-            filter: ['blur(0px)', 'blur(1.5px)', 'blur(0px)'],
+            color: '#ffffff',
+            y: [0, -3, 0],
+            scale: [1, 1.01, 1],
+            filter: ['blur(0px)', 'blur(5px)', 'blur(0px)'],
           }}
           transition={{
-            duration: 0.55,
-            delay: index * 0.04,
-            ease: 'easeInOut',
-            repeat: Infinity,
-            repeatDelay: 4,
+            duration: 0.5,
+            delay: index * 0.05,
           }}
           className="colourful-text__char"
         >
