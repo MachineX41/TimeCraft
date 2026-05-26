@@ -17,7 +17,7 @@ export default function ColourfulText({ text, className = '' }) {
       {text.split('').map((char, index) => (
         <motion.span
           key={`${char}-${count}-${index}`}
-          initial={{ color: '#1447E7', y: 0 }}
+          initial={{ color: '#054DEA', y: 0 }}
           animate={{
             color: '#ffffff',
             y: [0, -3, 0],
