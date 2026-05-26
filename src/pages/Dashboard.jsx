@@ -19,11 +19,11 @@ export default function Dashboard({
   onSaveProject,
 }) {
   return (
-    <div className="app-bg min-h-screen font-sans text-white antialiased">
+    <div className="app-bg flex min-h-screen flex-col font-sans text-white antialiased">
       <Navbar onAddProject={onAddProject} />
 
-      <div className="flex min-h-screen flex-col pt-[4.25rem]">
-        <main className="x-main">
+      <div className="flex flex-1 flex-col pt-[4.25rem]">
+        <main className="x-main flex-1">
           <div className="x-main__container">
             <header className="x-hero">
               <p className="x-hero__overline">Freelancer workspace</p>
@@ -45,9 +45,9 @@ export default function Dashboard({
             />
           </div>
         </main>
-      </div>
 
-      <Footer />
+        <Footer />
+      </div>
 
       <ProjectDrawer
         isOpen={modalOpen}
