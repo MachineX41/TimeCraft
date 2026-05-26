@@ -192,6 +192,8 @@ export default function ProjectDrawer({ isOpen, project, onOpen, onClose, onSave
         aria-labelledby="drawer-title"
         className={`drawer-panel ${isOpen ? 'drawer-panel--open' : ''}`}
       >
+        <span className="drawer-panel__texture" aria-hidden="true" />
+
         <button
           type="button"
           className="drawer-rail"
