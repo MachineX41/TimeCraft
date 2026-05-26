@@ -617,7 +617,7 @@ body {
   background-color: rgb(3 3 5 / 0.04);
   backdrop-filter: blur(32px) saturate(180%);
   -webkit-backdrop-filter: blur(32px) saturate(180%);
-  border: none;
+  border-left: none;
   transition:
     width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.42s cubic-bezier(0.22, 1, 0.36, 1),
@@ -625,7 +625,7 @@ body {
   box-shadow: none;
 }
 
-/* sol kenar — üst/altta yumuşak solan gradient çizgi */
+/* sol kenar border — navbar rim borderının 90deg karşılığı */
 .drawer-panel::before {
   content: '';
   position: absolute;
@@ -633,45 +633,13 @@ body {
   bottom: 0;
   left: 0;
   z-index: 4;
-  width: 3px;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgb(255 255 255 / 0.08) 12%,
-    rgb(255 255 255 / 0.26) 32%,
-    rgb(255 255 255 / 0.4) 50%,
-    rgb(255 255 255 / 0.26) 68%,
-    rgb(255 255 255 / 0.08) 88%,
-    transparent 100%
-  );
-  pointer-events: none;
-}
-
-.drawer-panel::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 4;
-  width: 44px;
-  background: linear-gradient(
-    90deg,
-    rgb(255 255 255 / 0.08) 0%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    180deg,
-    transparent 0%,
-    #000 12%,
-    #000 88%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    180deg,
-    transparent 0%,
-    #000 12%,
-    #000 88%,
+  width: 5px;
+  background: radial-gradient(
+    ellipse 100% 42% at 0% 50%,
+    rgb(255 255 255 / 0.95) 0%,
+    rgb(228 228 232 / 0.75) 28%,
+    rgb(161 161 170 / 0.5) 52%,
+    rgb(82 82 91 / 0.35) 72%,
     transparent 100%
   );
   pointer-events: none;
@@ -702,23 +670,12 @@ body {
 
 .drawer-panel:hover::before,
 .drawer-panel--open::before {
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgb(255 255 255 / 0.1) 12%,
-    rgb(255 255 255 / 0.32) 32%,
-    rgb(255 255 255 / 0.5) 50%,
-    rgb(255 255 255 / 0.32) 68%,
-    rgb(255 255 255 / 0.1) 88%,
-    transparent 100%
-  );
-}
-
-.drawer-panel:hover::after,
-.drawer-panel--open::after {
-  background: linear-gradient(
-    90deg,
-    rgb(255 255 255 / 0.1) 0%,
+  background: radial-gradient(
+    ellipse 100% 42% at 0% 50%,
+    rgb(255 255 255 / 1) 0%,
+    rgb(232 232 235 / 0.82) 28%,
+    rgb(181 181 189 / 0.58) 52%,
+    rgb(99 99 109 / 0.4) 72%,
     transparent 100%
   );
 }
