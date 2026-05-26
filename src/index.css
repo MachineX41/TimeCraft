@@ -16,6 +16,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Zen Dots';
+  src: url('/fonts/ZenDots-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-display: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -546,8 +554,9 @@ body {
 :root {
   --drawer-collapsed: 3.25rem;
   --drawer-expanded: 26.5rem;
-  --drawer-contour-tile-w: 430px;
-  --drawer-contour-tile-h: 686px;
+  --drawer-contour-tile-w: 448px;
+  --drawer-contour-tile-h: 713px;
+  --drawer-glass-blur: 48px;
 }
 
 .drawer-root {
@@ -608,12 +617,64 @@ body {
   background-color: rgb(3 3 5 / 0.04);
   backdrop-filter: blur(32px) saturate(180%);
   -webkit-backdrop-filter: blur(32px) saturate(180%);
-  border-left: 1px solid rgb(255 255 255 / 0.05);
+  border: none;
   transition:
     width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.42s cubic-bezier(0.22, 1, 0.36, 1),
     background-color 0.42s cubic-bezier(0.22, 1, 0.36, 1);
   box-shadow: none;
+}
+
+/* sol kenar — üst/altta yumuşak solan gradient çizgi */
+.drawer-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 4;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.08) 12%,
+    rgb(255 255 255 / 0.26) 32%,
+    rgb(255 255 255 / 0.4) 50%,
+    rgb(255 255 255 / 0.26) 68%,
+    rgb(255 255 255 / 0.08) 88%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.drawer-panel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 4;
+  width: 44px;
+  background: linear-gradient(
+    90deg,
+    rgb(255 255 255 / 0.08) 0%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 12%,
+    #000 88%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 12%,
+    #000 88%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
 /* topografik kontur — countours.svg (siyah fill → invert ile soluk çizgi) */
@@ -628,7 +689,7 @@ body {
   background-size: var(--drawer-contour-tile-w) var(--drawer-contour-tile-h);
   background-position: right top;
   opacity: 0.38;
-  filter: invert(1) brightness(0.48) contrast(1.05);
+  filter: invert(1) brightness(0.48) contrast(1.1) blur(0.2px);
   transition: none;
 }
 
@@ -637,6 +698,29 @@ body {
   width: var(--drawer-expanded);
   background-color: rgb(3 3 5 / 0.06);
   box-shadow: -16px 0 48px rgb(0 0 0 / 0.28);
+}
+
+.drawer-panel:hover::before,
+.drawer-panel--open::before {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.1) 12%,
+    rgb(255 255 255 / 0.32) 32%,
+    rgb(255 255 255 / 0.5) 50%,
+    rgb(255 255 255 / 0.32) 68%,
+    rgb(255 255 255 / 0.1) 88%,
+    transparent 100%
+  );
+}
+
+.drawer-panel:hover::after,
+.drawer-panel--open::after {
+  background: linear-gradient(
+    90deg,
+    rgb(255 255 255 / 0.1) 0%,
+    transparent 100%
+  );
 }
 
 .drawer-rail {
@@ -665,17 +749,27 @@ body {
 .drawer-rail__label {
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  font-family: var(--font-sans);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--color-x-muted);
+  font-family: 'Zen Dots', var(--font-sans);
+  font-size: 1.125rem;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.1em;
   white-space: nowrap;
-  transition: color 0.2s ease;
 }
 
-.drawer-panel:hover .drawer-rail__label,
-.drawer-panel--open .drawer-rail__label {
+.drawer-rail__label .colourful-text {
+  display: inline-block;
+  color: #fff;
+}
+
+.colourful-text__char {
+  display: inline-block;
+  white-space: pre;
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  letter-spacing: inherit;
   color: #fff;
 }
 
@@ -1541,34 +1635,126 @@ body {
   color: rgb(255 255 255 / 0.5);
 }
 
+/* premium glassmorphism — blur wrapper + gradient kenar ışığı */
+.drawer-glass {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 12px;
+  background: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 0.1) 0%,
+    rgb(255 255 255 / 0.04) 45%,
+    rgb(255 255 255 / 0.02) 100%
+  );
+  backdrop-filter: blur(var(--drawer-glass-blur)) saturate(185%) brightness(1.04);
+  -webkit-backdrop-filter: blur(var(--drawer-glass-blur)) saturate(185%) brightness(1.04);
+  box-shadow:
+    0 18px 40px rgb(0 0 0 / 0.38),
+    inset 0 1px 0 rgb(255 255 255 / 0.16);
+  transition:
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.drawer-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 0.42) 0%,
+    rgb(255 255 255 / 0.12) 38%,
+    rgb(255 255 255 / 0.04) 62%,
+    rgb(255 255 255 / 0.18) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.drawer-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 0.07) 0%,
+    transparent 42%
+  );
+  pointer-events: none;
+}
+
+.drawer-glass--pill {
+  border-radius: 9999px;
+}
+
+.drawer-glass:hover {
+  background: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 0.13) 0%,
+    rgb(255 255 255 / 0.05) 45%,
+    rgb(255 255 255 / 0.025) 100%
+  );
+  box-shadow:
+    0 22px 48px rgb(0 0 0 / 0.42),
+    inset 0 1px 0 rgb(255 255 255 / 0.2);
+}
+
+.drawer-glass:hover::before {
+  background: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 0.5) 0%,
+    rgb(255 255 255 / 0.16) 38%,
+    rgb(255 255 255 / 0.06) 62%,
+    rgb(255 255 255 / 0.22) 100%
+  );
+}
+
+.drawer-glass:has(.drawer-input:focus),
+.drawer-glass:has(.drawer-select:focus),
+.drawer-glass:focus-visible {
+  background: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 0.15) 0%,
+    rgb(255 255 255 / 0.06) 45%,
+    rgb(255 255 255 / 0.03) 100%
+  );
+  box-shadow:
+    0 24px 52px rgb(0 0 0 / 0.45),
+    inset 0 1px 0 rgb(255 255 255 / 0.24);
+}
+
 .drawer-input {
+  position: relative;
+  z-index: 1;
+  display: block;
   width: 100%;
   box-sizing: border-box;
   padding: 0.6875rem 0.875rem;
   font-family: 'Google Sans', var(--font-sans);
   font-size: 0.875rem;
   color: #fff;
-  background: rgb(255 255 255 / 0.03);
-  border: 1px solid rgb(255 255 255 / 0.06);
-  border-radius: 12px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
   outline: none;
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease;
+  box-shadow: none;
 }
 
 .drawer-input::placeholder {
-  color: rgb(255 255 255 / 0.28);
-}
-
-.drawer-input:hover {
-  border-color: rgb(255 255 255 / 0.1);
-  background: rgb(255 255 255 / 0.045);
-}
-
-.drawer-input:focus {
-  border-color: rgb(255 255 255 / 0.18);
-  background: rgb(255 255 255 / 0.05);
+  color: rgb(255 255 255 / 0.35);
 }
 
 .drawer-field-grid {
@@ -1617,21 +1803,24 @@ body {
   cursor: pointer;
   transition:
     opacity 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
     color 0.2s ease;
 }
 
 .drawer-btn--ghost {
+  position: relative;
+  z-index: 0;
   color: var(--color-x-muted);
-  background: transparent;
-  border: 1px solid rgb(255 255 255 / 0.1);
+  border: none;
 }
 
 .drawer-btn--ghost:hover {
   color: #fff;
-  border-color: rgb(255 255 255 / 0.2);
-  background: rgb(255 255 255 / 0.04);
+}
+
+.drawer-btn.drawer-glass {
+  isolation: isolate;
 }
 
 .drawer-footer__cta {

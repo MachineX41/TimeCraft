@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { PROJECT_STATUSES } from '../interfaces/projectSchema'
 import { handleCtaPointerEnter, handleCtaPointerLeave } from '../utils/ctaButton'
+import ColourfulText from './ui/ColourfulText'
 
 function projectToForm(project) {
   if (!project) {
@@ -49,32 +50,36 @@ function ProjectDrawerForm({ project, onClose, onSave }) {
             <label htmlFor="clientName" className="drawer-label">
               Müşteri
             </label>
-            <input
-              id="clientName"
-              name="clientName"
-              type="text"
-              required
-              value={form.clientName}
-              onChange={handleChange}
-              placeholder="Şirket veya kişi adı"
-              className="drawer-input"
-            />
+            <div className="drawer-glass">
+              <input
+                id="clientName"
+                name="clientName"
+                type="text"
+                required
+                value={form.clientName}
+                onChange={handleChange}
+                placeholder="Şirket veya kişi adı"
+                className="drawer-input"
+              />
+            </div>
           </div>
 
           <div className="drawer-field">
             <label htmlFor="projectTitle" className="drawer-label">
               Proje
             </label>
-            <input
-              id="projectTitle"
-              name="projectTitle"
-              type="text"
-              required
-              value={form.projectTitle}
-              onChange={handleChange}
-              placeholder="Proje adı"
-              className="drawer-input"
-            />
+            <div className="drawer-glass">
+              <input
+                id="projectTitle"
+                name="projectTitle"
+                type="text"
+                required
+                value={form.projectTitle}
+                onChange={handleChange}
+                placeholder="Proje adı"
+                className="drawer-input"
+              />
+            </div>
           </div>
         </section>
 
@@ -84,35 +89,39 @@ function ProjectDrawerForm({ project, onClose, onSave }) {
               <label htmlFor="hourlyRate" className="drawer-label">
                 Saatlik ücret
               </label>
-              <input
-                id="hourlyRate"
-                name="hourlyRate"
-                type="number"
-                min="0"
-                step="1"
-                required
-                value={form.hourlyRate}
-                onChange={handleChange}
-                className="drawer-input"
-                placeholder="0"
-              />
+              <div className="drawer-glass">
+                <input
+                  id="hourlyRate"
+                  name="hourlyRate"
+                  type="number"
+                  min="0"
+                  step="1"
+                  required
+                  value={form.hourlyRate}
+                  onChange={handleChange}
+                  className="drawer-input"
+                  placeholder="0"
+                />
+              </div>
             </div>
             <div className="drawer-field">
               <label htmlFor="hoursWorked" className="drawer-label">
                 Mesai (saat)
               </label>
-              <input
-                id="hoursWorked"
-                name="hoursWorked"
-                type="number"
-                min="0"
-                step="0.5"
-                required
-                value={form.hoursWorked}
-                onChange={handleChange}
-                className="drawer-input"
-                placeholder="0"
-              />
+              <div className="drawer-glass">
+                <input
+                  id="hoursWorked"
+                  name="hoursWorked"
+                  type="number"
+                  min="0"
+                  step="0.5"
+                  required
+                  value={form.hoursWorked}
+                  onChange={handleChange}
+                  className="drawer-input"
+                  placeholder="0"
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -122,25 +131,31 @@ function ProjectDrawerForm({ project, onClose, onSave }) {
             <label htmlFor="status" className="drawer-label">
               Durum
             </label>
-            <select
-              id="status"
-              name="status"
-              value={form.status}
-              onChange={handleChange}
-              className="drawer-input drawer-select"
-            >
-              {PROJECT_STATUSES.map((status) => (
-                <option key={status} value={status} className="bg-[#030305]">
-                  {status}
-                </option>
-              ))}
-            </select>
+            <div className="drawer-glass">
+              <select
+                id="status"
+                name="status"
+                value={form.status}
+                onChange={handleChange}
+                className="drawer-input drawer-select"
+              >
+                {PROJECT_STATUSES.map((status) => (
+                  <option key={status} value={status} className="bg-[#030305]">
+                    {status}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </section>
       </div>
 
       <footer className="drawer-footer">
-        <button type="button" onClick={onClose} className="drawer-btn drawer-btn--ghost">
+        <button
+          type="button"
+          onClick={onClose}
+          className="drawer-btn drawer-btn--ghost drawer-glass drawer-glass--pill"
+        >
           İptal
         </button>
         <button
@@ -200,7 +215,9 @@ export default function ProjectDrawer({ isOpen, project, onOpen, onClose, onSave
           aria-label="Yeni proje ekle"
           onClick={onOpen}
         >
-          <span className="drawer-rail__label">Yeni proje ekle</span>
+          <span className="drawer-rail__label">
+            <ColourfulText text="Yeni proje ekle" />
+          </span>
         </button>
 
         <div className="drawer-panel__body">
