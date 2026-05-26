@@ -30,42 +30,54 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
   const filtered = filterProjects(projects, filter)
 
   return (
-    <section>
-      <div className="mb-8 flex flex-wrap items-end justify-between gap-6">
-        <div className="flex gap-8">
+    <section className="x-section" aria-label="Proje listesi">
+      <header className="x-section__head">
+        <h2 className="x-section__title">Proje listesi</h2>
+        <p className="x-section__lead">
+          Ücret, mesai ve durumu filtreleyerek görüntüleyin.
+        </p>
+      </header>
+
+      <div className="workspace-toolbar">
+        <div className="workspace-toolbar__filters" role="tablist" aria-label="Proje filtresi">
           {FILTERS.map((f) => (
             <button
               key={f.id}
               type="button"
+              role="tab"
+              aria-selected={filter === f.id}
               onClick={() => setFilter(f.id)}
-              className={`filter-tab ${filter === f.id ? 'filter-tab-active' : ''}`}
+              className={`workspace-filter ${filter === f.id ? 'workspace-filter--active' : ''}`}
             >
               {f.label}
             </button>
           ))}
         </div>
-        <p className="text-caption tabular-nums">{filtered.length} kayıt</p>
+        <p className="workspace-toolbar__count tabular-nums">{filtered.length} kayıt</p>
       </div>
 
       {filtered.length === 0 ? (
-        <div className="py-24 text-center">
-          <p className="text-lg font-medium text-white">Proje bulunamadı</p>
-          <p className="text-caption mt-2">Yeni bir proje ekleyerek başlayın.</p>
-          <button type="button" onClick={onAddProject} className="btn-primary mt-8">
+        <div className="x-surface workspace-empty">
+          <p className="workspace-empty__title">Proje bulunamadı</p>
+          <p className="workspace-empty__text">Yeni bir proje ekleyerek başlayın.</p>
+          <button type="button" onClick={onAddProject} className="btn-primary workspace-empty__cta">
             Yeni proje
           </button>
         </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[720px] text-left">
+        <div className="x-surface">
+          <div className="workspace-table-wrap">
+          <table className="workspace-table">
             <thead>
-              <tr className="border-b border-white/[0.08]">
-                <th className="text-overline pb-4 pr-6 font-medium">Proje</th>
-                <th className="text-overline pb-4 pr-6 font-medium">Ücret</th>
-                <th className="text-overline pb-4 pr-6 font-medium">Mesai</th>
-                <th className="text-overline pb-4 pr-6 font-medium">Kazanç</th>
-                <th className="text-overline pb-4 pr-6 font-medium">Durum</th>
-                <th className="text-overline pb-4 text-right font-medium"> </th>
+              <tr>
+                <th className="workspace-table__head">Proje</th>
+                <th className="workspace-table__head">Ücret</th>
+                <th className="workspace-table__head">Mesai</th>
+                <th className="workspace-table__head">Kazanç</th>
+                <th className="workspace-table__head">Durum</th>
+                <th className="workspace-table__head workspace-table__head--actions">
+                  <span className="sr-only">İşlemler</span>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -73,41 +85,38 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
                 const earnings = calculateProjectEarnings(project)
 
                 return (
-                  <tr
-                    key={project.id}
-                    className="group border-b border-white/[0.06] transition-colors hover:bg-white/[0.02]"
-                  >
-                    <td className="py-5 pr-6">
-                      <p className="font-medium text-white">{project.projectTitle}</p>
-                      <p className="text-caption mt-1">
+                  <tr key={project.id} className="workspace-table__row">
+                    <td className="workspace-table__cell workspace-table__cell--primary">
+                      <p className="workspace-table__title">{project.projectTitle}</p>
+                      <p className="workspace-table__sub">
                         {project.clientName} · {formatDate(project.createdAt)}
                       </p>
                     </td>
-                    <td className="py-5 pr-6 text-sm tabular-nums text-neutral-400">
+                    <td className="workspace-table__cell workspace-table__cell--num">
                       {formatCurrency(project.hourlyRate)}
                     </td>
-                    <td className="py-5 pr-6 text-sm tabular-nums text-neutral-400">
+                    <td className="workspace-table__cell workspace-table__cell--num">
                       {project.hoursWorked} sa
                     </td>
-                    <td className="py-5 pr-6 text-sm font-medium tabular-nums text-white">
+                    <td className="workspace-table__cell workspace-table__cell--num workspace-table__cell--earnings">
                       {formatCurrency(earnings)}
                     </td>
-                    <td className="py-5 pr-6">
+                    <td className="workspace-table__cell">
                       <StatusBadge status={project.status} />
                     </td>
-                    <td className="py-5 text-right">
-                      <div className="inline-flex gap-4 opacity-0 transition-opacity group-hover:opacity-100">
+                    <td className="workspace-table__cell workspace-table__cell--actions">
+                      <div className="workspace-table__actions">
                         <button
                           type="button"
                           onClick={() => onEdit(project)}
-                          className="btn-text"
+                          className="workspace-table__action"
                         >
                           Düzenle
                         </button>
                         <button
                           type="button"
                           onClick={() => onDelete(project.id)}
-                          className="btn-text"
+                          className="workspace-table__action workspace-table__action--danger"
                         >
                           Sil
                         </button>
@@ -118,6 +127,7 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
               })}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </section>

@@ -1,5 +1,4 @@
 import Navbar from '../components/Navbar'
-import RimPanel from '../components/RimPanel'
 import MetricsRow from '../components/MetricsRow'
 import ProjectTable from '../components/ProjectTable'
 import ProjectDrawer from '../components/ProjectDrawer'
@@ -24,23 +23,26 @@ export default function Dashboard({
       <Navbar onAddProject={onAddProject} />
 
       <div className="flex min-h-screen flex-col pt-[4.25rem]">
-        <main className="flex-1 px-6 py-10 lg:px-12 lg:py-14">
-          <div className="mx-auto max-w-5xl">
-            <p className="text-overline mb-3">Freelancer workspace</p>
-            <h1 className="text-display mb-4">Projeler</h1>
-            <p className="text-caption mb-10 max-w-xl">
-              Zaman, ücret ve durum takibini tek bir minimal panelden yönetin.
-            </p>
+        <main className="x-main">
+          <div className="x-main__container">
+            <header className="x-hero">
+              <p className="x-hero__overline">Freelancer workspace</p>
+              <h1 className="x-hero__title">Projeler</h1>
+              <p className="x-hero__lead">
+                Zaman, ücret ve durum takibini tek bir panelden yönetin.
+                {projects.length > 0 && (
+                  <span className="x-hero__meta"> {projects.length} kayıt</span>
+                )}
+              </p>
+            </header>
 
-            <RimPanel innerClassName="px-6 py-8 lg:px-8 lg:py-10">
-              <MetricsRow projects={projects} />
-              <ProjectTable
-                projects={projects}
-                onEdit={onEditProject}
-                onDelete={onRequestDelete}
-                onAddProject={onAddProject}
-              />
-            </RimPanel>
+            <MetricsRow projects={projects} />
+            <ProjectTable
+              projects={projects}
+              onEdit={onEditProject}
+              onDelete={onRequestDelete}
+              onAddProject={onAddProject}
+            />
           </div>
         </main>
       </div>

@@ -4,8 +4,8 @@ export default function StatusBadge({ status }) {
   const styles = STATUS_STYLES[status] ?? STATUS_STYLES.Beklemede
 
   return (
-    <span className={`inline-flex items-center gap-2 text-xs text-neutral-400 ${styles.text}`}>
-      <span className={`h-1 w-1 rounded-full ${styles.dot}`} />
+    <span className={`status-badge ${styles.text}`}>
+      <span className={`status-badge__dot ${styles.dot}`} aria-hidden />
       {status}
     </span>
   )

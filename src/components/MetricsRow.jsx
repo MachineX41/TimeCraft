@@ -10,13 +10,11 @@ export default function MetricsRow({ projects }) {
   ]
 
   return (
-    <div className="mb-12 grid grid-cols-1 gap-10 border-b border-white/[0.05] pb-12 sm:grid-cols-3 sm:gap-8">
+    <div className="x-stats" aria-label="Özet metrikler">
       {metrics.map((metric) => (
-        <div key={metric.label}>
-          <p className="text-overline mb-2">{metric.label}</p>
-          <p className="text-2xl font-medium tracking-tight text-white tabular-nums sm:text-3xl">
-            {metric.value}
-          </p>
+        <div key={metric.label} className="x-stat">
+          <p className="x-stat__value">{metric.value}</p>
+          <p className="x-stat__label">{metric.label}</p>
         </div>
       ))}
     </div>

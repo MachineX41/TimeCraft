@@ -130,7 +130,7 @@ function ProjectDrawerForm({ project, onClose, onSave }) {
               className="drawer-input drawer-select"
             >
               {PROJECT_STATUSES.map((status) => (
-                <option key={status} value={status} className="bg-[#0A0A0A]">
+                <option key={status} value={status} className="bg-[#030305]">
                   {status}
                 </option>
               ))}

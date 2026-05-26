@@ -1,20 +1,21 @@
-import RimPanel from './RimPanel'
-
 export default function DeleteConfirmModal({ project, onCancel, onConfirm }) {
   if (!project) return null
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-[#0A0A0A]/60 p-6 backdrop-blur-md"
+      className="x-modal-backdrop"
       role="alertdialog"
       aria-modal="true"
+      aria-labelledby="delete-modal-title"
     >
-      <RimPanel className="w-full max-w-md" innerClassName="p-8 text-center">
-        <h2 className="text-xl font-medium tracking-tight text-white">Projeyi sil</h2>
-        <p className="text-caption mt-3">
+      <div className="x-modal x-surface">
+        <h2 id="delete-modal-title" className="x-modal__title">
+          Projeyi sil
+        </h2>
+        <p className="x-modal__text">
           <span className="text-white">{project.projectTitle}</span> kalıcı olarak silinecek.
         </p>
-        <div className="mt-8 flex gap-3">
+        <div className="x-modal__actions">
           <button type="button" onClick={onCancel} className="btn-ghost flex-1">
             Vazgeç
           </button>
@@ -22,7 +23,7 @@ export default function DeleteConfirmModal({ project, onCancel, onConfirm }) {
             Sil
           </button>
         </div>
-      </RimPanel>
+      </div>
     </div>
   )
 }
