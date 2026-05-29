@@ -39,9 +39,8 @@ export default function App() {
     (formData) => {
       const newProject = { ...createEmptyProject(), ...formData }
       updateProjects((prev) => [newProject, ...prev])
-      closeModal()
     },
-    [updateProjects, closeModal],
+    [updateProjects],
   )
 
   const updateProject = useCallback(
@@ -51,9 +50,8 @@ export default function App() {
           project.id === id ? { ...project, ...formData } : project,
         ),
       )
-      closeModal()
     },
-    [updateProjects, closeModal],
+    [updateProjects],
   )
 
   const requestDeleteProject = useCallback(
