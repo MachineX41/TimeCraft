@@ -1008,13 +1008,17 @@ body {
   border-bottom: none;
 }
 
+.dashboard-shell {
+  min-height: 0;
+}
+
 .x-main {
   position: relative;
   z-index: 0;
-  flex: 1;
+  flex: 0 0 auto;
   margin-top: 0;
   background-color: #030305;
-  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.5rem, 5vw, 3.5rem) clamp(4rem, 10vw, 7rem);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.5rem, 5vw, 3.5rem) clamp(1.25rem, 3vw, 2rem);
 }
 
 .x-main::before {
@@ -1986,7 +1990,8 @@ body {
 .site-footer {
   position: relative;
   width: 100%;
-  margin-top: auto;
+  flex-shrink: 0;
+  margin-top: clamp(0.5rem, 2vw, 1rem);
   overflow: hidden;
   background-color: #030305;
 }

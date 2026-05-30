@@ -24,7 +24,7 @@ export default function Dashboard({
     <div className="app-bg flex min-h-screen flex-col font-sans text-white antialiased">
       <Navbar onAddProject={onAddProject} />
 
-      <div className="flex flex-1 flex-col">
+      <div className="dashboard-shell flex flex-1 flex-col">
         <section className="x-page-header" aria-label="Sayfa başlığı">
           <div className="x-page-header__media" aria-hidden="true">
             <div className="x-page-header__bg" />
@@ -36,7 +36,7 @@ export default function Dashboard({
           </div>
         </section>
 
-        <main className="x-main flex-1">
+        <main className="x-main">
           <div className="x-main__container">
             <ProjectTable
               projects={projects}
