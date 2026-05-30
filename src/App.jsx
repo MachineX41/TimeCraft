@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Dashboard from './pages/Dashboard'
 import { createEmptyProject } from './interfaces/projectSchema'
 import {
@@ -9,8 +9,13 @@ import {
 export default function App() {
   const [projects, setProjects] = useState(loadProjectsFromStorage)
   const [modalOpen, setModalOpen] = useState(false)
-  const [editingProject, setEditingProject] = useState(null)
+  const [drawerMode, setDrawerMode] = useState('create')
+  const [drawerProjectId, setDrawerProjectId] = useState(null)
   const [deletingProject, setDeletingProject] = useState(null)
+
+  const drawerProject = drawerProjectId
+    ? (projects.find((project) => project.id === drawerProjectId) ?? null)
+    : null
 
   const updateProjects = useCallback((updater) => {
     setProjects((prev) => {
@@ -21,19 +26,34 @@ export default function App() {
   }, [])
 
   const openCreateModal = useCallback(() => {
-    setEditingProject(null)
+    setDrawerProjectId(null)
+    setDrawerMode('create')
+    setModalOpen(true)
+  }, [])
+
+  const openDetailModal = useCallback((project) => {
+    setDrawerProjectId(project.id)
+    setDrawerMode('detail')
     setModalOpen(true)
   }, [])
 
   const openEditModal = useCallback((project) => {
-    setEditingProject(project)
+    setDrawerProjectId(project.id)
+    setDrawerMode('edit')
     setModalOpen(true)
   }, [])
 
   const closeModal = useCallback(() => {
     setModalOpen(false)
-    setEditingProject(null)
+    setDrawerProjectId(null)
+    setDrawerMode('create')
   }, [])
+
+  useEffect(() => {
+    if (modalOpen && drawerProjectId && !drawerProject) {
+      closeModal()
+    }
+  }, [modalOpen, drawerProjectId, drawerProject, closeModal])
 
   const createProject = useCallback(
     (formData) => {
@@ -67,31 +87,36 @@ export default function App() {
 
   const confirmDelete = useCallback(() => {
     if (!deletingProject) return
-    updateProjects((prev) =>
-      prev.filter((project) => project.id !== deletingProject.id),
-    )
+    const deletedId = deletingProject.id
+    updateProjects((prev) => prev.filter((project) => project.id !== deletedId))
+    if (drawerProjectId === deletedId) {
+      closeModal()
+    }
     setDeletingProject(null)
-  }, [deletingProject, updateProjects])
+  }, [deletingProject, drawerProjectId, closeModal, updateProjects])
 
   const handleSaveProject = useCallback(
     (formData) => {
-      if (editingProject) {
-        updateProject(editingProject.id, formData)
+      if (drawerProjectId) {
+        updateProject(drawerProjectId, formData)
       } else {
         createProject(formData)
       }
     },
-    [editingProject, updateProject, createProject],
+    [drawerProjectId, updateProject, createProject],
   )
 
   return (
     <Dashboard
       projects={projects}
       modalOpen={modalOpen}
-      editingProject={editingProject}
+      drawerMode={drawerMode}
+      drawerProject={drawerProject}
       deletingProject={deletingProject}
       onAddProject={openCreateModal}
+      onSelectProject={openDetailModal}
       onEditProject={openEditModal}
+      onDrawerModeChange={setDrawerMode}
       onRequestDelete={requestDeleteProject}
       onCancelDelete={cancelDelete}
       onConfirmDelete={confirmDelete}

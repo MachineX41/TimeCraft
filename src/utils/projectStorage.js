@@ -23,6 +23,7 @@ function normalizeProject(raw) {
     hourlyRate: Number(project.hourlyRate) || 0,
     hoursWorked: Number(project.hoursWorked) || 0,
     status,
+    about: typeof project.about === 'string' ? project.about : '',
     createdAt:
       typeof project.createdAt === 'string'
         ? project.createdAt

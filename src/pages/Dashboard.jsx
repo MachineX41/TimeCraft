@@ -10,10 +10,13 @@ import GradualBlur from '../components/GradualBlur'
 export default function Dashboard({
   projects,
   modalOpen,
-  editingProject,
+  drawerMode,
+  drawerProject,
   deletingProject,
   onAddProject,
+  onSelectProject,
   onEditProject,
+  onDrawerModeChange,
   onRequestDelete,
   onCancelDelete,
   onConfirmDelete,
@@ -40,6 +43,7 @@ export default function Dashboard({
           <div className="x-main__container">
             <ProjectTable
               projects={projects}
+              onSelect={onSelectProject}
               onEdit={onEditProject}
               onDelete={onRequestDelete}
               onAddProject={onAddProject}
@@ -52,10 +56,13 @@ export default function Dashboard({
 
       <ProjectDrawer
         isOpen={modalOpen}
-        project={editingProject}
+        mode={drawerMode}
+        project={drawerProject}
+        onModeChange={onDrawerModeChange}
         onOpen={onAddProject}
         onClose={onCloseModal}
         onSave={onSaveProject}
+        onRequestDelete={onRequestDelete}
       />
 
       <DeleteConfirmModal

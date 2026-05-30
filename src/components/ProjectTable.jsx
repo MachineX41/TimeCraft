@@ -50,7 +50,7 @@ function filterProjects(projects, filter) {
   return projects
 }
 
-export default function ProjectTable({ projects, onEdit, onDelete, onAddProject }) {
+export default function ProjectTable({ projects, onSelect, onEdit, onDelete, onAddProject }) {
   const reduceMotion = useReducedMotion()
   const [filter, setFilter] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -225,7 +225,9 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
                           <motion.tr
                             key={project.id}
                             layout
-                            className="workspace-table__row"
+                            role="button"
+                            tabIndex={0}
+                            className="workspace-table__row workspace-table__row--clickable"
                             variants={tableRowVariants(
                               reduceMotion,
                               rowIndex < MAX_VISIBLE_ROWS,
@@ -233,6 +235,14 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
                             initial={rowIndex < MAX_VISIBLE_ROWS ? 'hidden' : false}
                             animate="visible"
                             exit="exit"
+                            aria-label={`${project.projectTitle} detayını aç`}
+                            onClick={() => onSelect(project)}
+                            onKeyDown={(event) => {
+                              if (event.key === 'Enter' || event.key === ' ') {
+                                event.preventDefault()
+                                onSelect(project)
+                              }
+                            }}
                           >
                             <td className="workspace-table__cell workspace-table__cell--primary">
                               <p className="workspace-table__title">{project.projectTitle}</p>
@@ -256,14 +266,20 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
                               <div className="workspace-table__actions">
                                 <button
                                   type="button"
-                                  onClick={() => onEdit(project)}
+                                  onClick={(event) => {
+                                    event.stopPropagation()
+                                    onEdit(project)
+                                  }}
                                   className="workspace-table__action workspace-table__action--edit"
                                 >
                                   Düzenle
                                 </button>
                                 <button
                                   type="button"
-                                  onClick={() => onDelete(project.id)}
+                                  onClick={(event) => {
+                                    event.stopPropagation()
+                                    onDelete(project.id)
+                                  }}
                                   className="workspace-table__action workspace-table__action--danger"
                                 >
                                   Sil

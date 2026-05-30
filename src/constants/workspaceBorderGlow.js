@@ -17,3 +17,10 @@ export const DRAWER_FIELD_BORDER_GLOW = {
   borderRadius: 20,
   glowRadius: 32,
 }
+
+/** Drawer detay — özet metrik kartları */
+export const DRAWER_DETAIL_STAT_GLOW = {
+  ...WORKSPACE_BORDER_GLOW,
+  borderRadius: 20,
+  glowRadius: 28,
+}

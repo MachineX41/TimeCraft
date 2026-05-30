@@ -5,6 +5,7 @@ export function matchesProjectSearch(project, query) {
   const haystack = [
     project.projectTitle,
     project.clientName,
+    project.about,
     project.status,
     String(project.hourlyRate),
     String(project.hoursWorked),

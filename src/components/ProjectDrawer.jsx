@@ -1,9 +1,33 @@
 import { useEffect, useRef, useState } from 'react'
-import { DRAWER_FIELD_BORDER_GLOW } from '../constants/workspaceBorderGlow'
+import { motion, useReducedMotion } from 'motion/react'
+import {
+  DRAWER_DETAIL_STAT_GLOW,
+  DRAWER_FIELD_BORDER_GLOW,
+} from '../constants/workspaceBorderGlow'
 import { PROJECT_STATUSES } from '../interfaces/projectSchema'
 import { handleCtaPointerEnter, handleCtaPointerLeave } from '../utils/ctaButton'
+import {
+  calculateProjectEarnings,
+  formatCurrency,
+} from '../utils/projectStats'
 import BorderGlow from './BorderGlow'
+import StatusBadge from './StatusBadge'
 import ColourfulText from './ui/ColourfulText'
+
+const DRAWER_TABS = [
+  { id: 'detail', label: 'Detay' },
+  { id: 'edit', label: 'Düzenle' },
+]
+
+const filterPillSpring = { type: 'spring', stiffness: 480, damping: 38, mass: 0.7 }
+
+function formatDate(iso) {
+  return new Intl.DateTimeFormat('tr-TR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(iso))
+}
 
 function DrawerFieldGlow({ children }) {
   return (
@@ -20,10 +44,163 @@ function emptyForm() {
   return {
     clientName: '',
     projectTitle: '',
+    about: '',
     hourlyRate: '',
     hoursWorked: '',
     status: 'Beklemede',
   }
+}
+
+function DrawerTabs({ active, onChange }) {
+  const reduceMotion = useReducedMotion()
+
+  return (
+    <div className="workspace-filter-bar workspace-filter-bar--drawer">
+      <div className="workspace-filter-bar__row">
+        <div
+          className="workspace-filter-bar__track"
+          role="tablist"
+          aria-label="Proje görünümü"
+        >
+          <span className="workspace-filter-bar__rim" aria-hidden="true" />
+          {DRAWER_TABS.map((tab) => {
+            const isActive = active === tab.id
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => onChange(tab.id)}
+                className={`workspace-filter-bar__tab${isActive ? ' workspace-filter-bar__tab--active' : ''}`}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="drawer-view-pill"
+                    className="workspace-filter-bar__pill"
+                    transition={reduceMotion ? { duration: 0 } : filterPillSpring}
+                    aria-hidden="true"
+                  />
+                )}
+                <span className="workspace-filter-bar__label">{tab.label}</span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ProjectDrawerDetail({ project, onClose, onEdit, onRequestDelete, isBusy }) {
+  const earnings = calculateProjectEarnings(project)
+  const aboutText = project.about?.trim()
+
+  return (
+    <div className="drawer-detail">
+      <div className="drawer-scroll drawer-body">
+        <section className="drawer-detail__intro">
+          <StatusBadge status={project.status} />
+          <h3 className="drawer-detail__title">{project.projectTitle}</h3>
+          <p className="drawer-detail__client">{project.clientName}</p>
+        </section>
+
+        <section className="drawer-detail__section" aria-label="Proje özeti ve bilgiler">
+          <BorderGlow {...DRAWER_DETAIL_STAT_GLOW} className="drawer-detail-card">
+            <div className="drawer-detail-card__inner">
+              <div className="drawer-detail-card__metrics">
+                <div className="drawer-detail-metric">
+                  <span className="drawer-detail-metric__value tabular-nums">
+                    {formatCurrency(project.hourlyRate)}
+                  </span>
+                  <span className="drawer-detail-metric__label">Saatlik ücret</span>
+                </div>
+                <div className="drawer-detail-metric">
+                  <span className="drawer-detail-metric__value tabular-nums">
+                    {project.hoursWorked} sa
+                  </span>
+                  <span className="drawer-detail-metric__label">Mesai</span>
+                </div>
+                <div className="drawer-detail-metric drawer-detail-metric--wide">
+                  <span className="drawer-detail-metric__value drawer-detail-metric__value--accent tabular-nums">
+                    {formatCurrency(earnings)}
+                  </span>
+                  <span className="drawer-detail-metric__label">Toplam kazanç</span>
+                </div>
+              </div>
+
+              <div className="drawer-detail-card__divider" aria-hidden="true" />
+
+              <dl className="drawer-detail-card__meta">
+                <div className="drawer-detail-card__row">
+                  <dt>Durum</dt>
+                  <dd>
+                    <StatusBadge status={project.status} />
+                  </dd>
+                </div>
+                <div className="drawer-detail-card__row">
+                  <dt>Müşteri</dt>
+                  <dd>{project.clientName}</dd>
+                </div>
+                <div className="drawer-detail-card__row">
+                  <dt>Oluşturulma</dt>
+                  <dd>{formatDate(project.createdAt)}</dd>
+                </div>
+              </dl>
+            </div>
+          </BorderGlow>
+        </section>
+
+        <section
+          className="drawer-detail__section drawer-detail__section--about"
+          aria-label="Proje hakkında"
+        >
+          <h4 className="drawer-detail__section-title">Hakkında</h4>
+          <div className="drawer-detail-prose">
+            {aboutText ? (
+              <p className="drawer-detail-prose__body">{aboutText}</p>
+            ) : (
+              <p className="drawer-detail-prose__placeholder">
+                Bu proje için henüz bir açıklama eklenmemiş. Düzenle sekmesinden
+                kapsam ve notlarınızı yazabilirsiniz.
+              </p>
+            )}
+          </div>
+        </section>
+      </div>
+
+      <footer className="drawer-footer">
+        <button
+          type="button"
+          onClick={onClose}
+          disabled={isBusy}
+          className="btn-ghost flex-1"
+        >
+          Kapat
+        </button>
+        <button
+          type="button"
+          onClick={() => onRequestDelete(project.id)}
+          disabled={isBusy}
+          className="btn-ghost drawer-detail__danger flex-1"
+        >
+          Sil
+        </button>
+        <button
+          type="button"
+          onClick={onEdit}
+          disabled={isBusy}
+          className="app-navbar__cta drawer-footer__cta flex-1"
+          onPointerEnter={isBusy ? undefined : handleCtaPointerEnter}
+          onPointerLeave={isBusy ? undefined : handleCtaPointerLeave}
+        >
+          <span className="app-navbar__cta-inner">
+            <span className="app-navbar__cta-label">Düzenle</span>
+          </span>
+        </button>
+      </footer>
+    </div>
+  )
 }
 
 function projectToForm(project) {
@@ -33,6 +210,7 @@ function projectToForm(project) {
   return {
     clientName: project.clientName,
     projectTitle: project.projectTitle,
+    about: project.about ?? '',
     hourlyRate: String(project.hourlyRate),
     hoursWorked: String(project.hoursWorked),
     status: project.status,
@@ -68,6 +246,7 @@ function ProjectDrawerForm({ project, onClose, onSave, savePhase }) {
     onSave({
       clientName: form.clientName.trim(),
       projectTitle: form.projectTitle.trim(),
+      about: form.about.trim(),
       hourlyRate: Number(form.hourlyRate) || 0,
       hoursWorked: Number(form.hoursWorked) || 0,
       status: form.status,
@@ -113,6 +292,23 @@ function ProjectDrawerForm({ project, onClose, onSave, savePhase }) {
                 onChange={handleChange}
                 placeholder="Proje adı"
                 className="drawer-input"
+              />
+            </DrawerFieldGlow>
+          </div>
+
+          <div className="drawer-field">
+            <label htmlFor="about" className="drawer-label">
+              Proje hakkında
+            </label>
+            <DrawerFieldGlow>
+              <textarea
+                id="about"
+                name="about"
+                rows={4}
+                value={form.about}
+                onChange={handleChange}
+                placeholder="Kapsam, notlar veya önemli detaylar…"
+                className="drawer-input drawer-textarea"
               />
             </DrawerFieldGlow>
           </div>
@@ -221,8 +417,19 @@ function ProjectDrawerForm({ project, onClose, onSave, savePhase }) {
   )
 }
 
-export default function ProjectDrawer({ isOpen, project, onOpen, onClose, onSave }) {
-  const isEditing = Boolean(project)
+export default function ProjectDrawer({
+  isOpen,
+  mode,
+  project,
+  onModeChange,
+  onOpen,
+  onClose,
+  onSave,
+  onRequestDelete,
+}) {
+  const isCreate = mode === 'create'
+  const isDetail = mode === 'detail'
+  const showTabs = !isCreate && Boolean(project)
   const [forceCollapsed, setForceCollapsed] = useState(false)
   const [savePhase, setSavePhase] = useState('idle')
   const [formKey, setFormKey] = useState(0)
@@ -350,18 +557,35 @@ export default function ProjectDrawer({ isOpen, project, onOpen, onClose, onSave
           <header className="drawer-header">
             <div className="drawer-header__row">
               <h2 id="drawer-title" className="drawer-title">
-                {isEditing ? project?.projectTitle || 'Proje düzenle' : 'Yeni proje'}
+                {isCreate ? 'Yeni proje' : project?.projectTitle || 'Proje'}
               </h2>
             </div>
+            {showTabs && (
+              <DrawerTabs
+                active={isDetail ? 'detail' : 'edit'}
+                onChange={onModeChange}
+              />
+            )}
           </header>
 
-          <ProjectDrawerForm
-            key={`${project?.id ?? 'new'}-${formKey}`}
-            project={project}
-            onClose={handleClose}
-            onSave={handleSave}
-            savePhase={savePhase}
-          />
+          {isDetail && project ? (
+            <ProjectDrawerDetail
+              key={`detail-${project.id}-${formKey}`}
+              project={project}
+              onClose={handleClose}
+              onEdit={() => onModeChange('edit')}
+              onRequestDelete={onRequestDelete}
+              isBusy={savePhase !== 'idle'}
+            />
+          ) : (
+            <ProjectDrawerForm
+              key={`${project?.id ?? 'new'}-${formKey}`}
+              project={isCreate ? null : project}
+              onClose={handleClose}
+              onSave={handleSave}
+              savePhase={savePhase}
+            />
+          )}
         </div>
       </aside>
     </div>

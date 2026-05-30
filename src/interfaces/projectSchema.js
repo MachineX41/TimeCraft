@@ -8,6 +8,7 @@
  * @property {number} hourlyRate
  * @property {number} hoursWorked
  * @property {ProjectStatus} status
+ * @property {string} about Proje hakkında açıklama
  * @property {string} createdAt ISO 8601 date string
  */
 
@@ -37,6 +38,7 @@ export function createEmptyProject() {
     hourlyRate: 0,
     hoursWorked: 0,
     status: 'Beklemede',
+    about: '',
     createdAt: new Date().toISOString(),
   }
 }
@@ -50,6 +52,8 @@ export const MOCK_PROJECTS = [
     hourlyRate: 850,
     hoursWorked: 24,
     status: 'Devam Ediyor',
+    about:
+      'E-ticaret vitrininin yeniden tasarımı; ürün listeleme, sepet ve ödeme akışları. Haftalık sprint review ile ilerleniyor.',
     createdAt: '2026-04-12T09:00:00.000Z',
   },
   {
@@ -59,6 +63,8 @@ export const MOCK_PROJECTS = [
     hourlyRate: 720,
     hoursWorked: 40,
     status: 'Tamamlandı',
+    about:
+      'Kurumsal kimlik rehberine uygun çok dilli site. CMS entegrasyonu ve SEO optimizasyonu tamamlandı.',
     createdAt: '2026-03-05T14:30:00.000Z',
   },
   {
@@ -68,6 +74,8 @@ export const MOCK_PROJECTS = [
     hourlyRate: 950,
     hoursWorked: 8,
     status: 'Beklemede',
+    about:
+      'Figma üzerinde iOS/Android prototip; kullanıcı testleri için hazırlanıyor. Kick-off sonrası kapsam netleşecek.',
     createdAt: '2026-05-18T11:15:00.000Z',
   },
 ]
