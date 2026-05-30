@@ -24,23 +24,26 @@ export default function Dashboard({
 
       <div className="flex flex-1 flex-col">
         <section className="x-page-header" aria-label="Sayfa başlığı">
-          <img
-            src="/header.png"
-            alt=""
-            className="x-page-header__bg"
-            width={1643}
-            height={957}
-            decoding="async"
-          />
-          <div className="x-page-header__overlay" aria-hidden="true" />
-          <div className="x-page-header__inner x-main__container">
+          <div className="x-page-header__media" aria-hidden="true">
+            <div className="x-page-header__bg" />
+            <div className="x-page-header__overlay" />
+          </div>
+          <div className="x-page-header__body x-main__container">
             <header className="x-hero">
-              <p className="x-hero__overline">Freelancer workspace</p>
+              <p className="x-hero__overline">
+                <span className="x-hero__overline-dot" aria-hidden="true" />
+                Freelancer workspace
+              </p>
               <h1 className="x-hero__title">Projeler</h1>
               <p className="x-hero__lead">
                 Zaman, ücret ve durum takibini tek bir panelden yönetin.
                 {projects.length > 0 && (
-                  <span className="x-hero__meta"> {projects.length} kayıt</span>
+                  <span className="x-hero__meta">
+                    <span className="x-hero__meta-sep" aria-hidden="true">
+                      ·
+                    </span>
+                    {projects.length} kayıt
+                  </span>
                 )}
               </p>
             </header>
