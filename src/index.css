@@ -150,8 +150,8 @@ body {
   -webkit-backdrop-filter: blur(20px) saturate(160%);
   border-bottom: none;
   transition:
-    background 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .app-navbar--mega-open {
@@ -249,40 +249,35 @@ body {
   opacity: 0;
   pointer-events: none;
   font-family: 'Geist Mono', ui-monospace, monospace;
-  transition:
-    max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .app-navbar__mega-panel {
-  display: grid;
+  position: relative;
   width: 100%;
   box-sizing: border-box;
-  padding: 1.375rem clamp(1.75rem, 5.5vw, 3.5rem) 1.625rem;
+  min-height: 10.5rem;
   border-top: 1px solid rgb(255 255 255 / 0.08);
 }
 
 .app-navbar__mega-content {
-  grid-area: 1 / 1;
+  position: absolute;
+  inset: 0;
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   align-content: start;
   align-items: start;
   gap: clamp(1.5rem, 4vw, 3rem);
+  box-sizing: border-box;
+  padding: 1.375rem clamp(1.75rem, 5.5vw, 3.5rem) 1.625rem;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-12px);
   pointer-events: none;
-  transition:
-    opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.36s cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0.28s;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
 .app-navbar__mega-content--visible {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
   pointer-events: auto;
   z-index: 1;
 }
@@ -363,16 +358,15 @@ body {
 @media (min-width: 768px) {
   .app-navbar__mega {
     display: block;
+    transition:
+      max-height 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .app-navbar--mega-open .app-navbar__mega {
-    max-height: 20rem;
+    max-height: 12rem;
     opacity: 1;
     pointer-events: auto;
-  }
-
-  .app-navbar--mega-open .app-navbar__mega-panel {
-    min-height: 10.5rem;
   }
 }
 

@@ -64,7 +64,7 @@ export default function Navbar({ onAddProject }) {
   function handleMenuLeave() {
     leaveTimerRef.current = window.setTimeout(() => {
       setHoveredId(null)
-    }, 200)
+    }, 180)
   }
 
   function handleHeaderLeave(e) {
