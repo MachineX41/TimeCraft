@@ -123,20 +123,20 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
                       </td>
                       <td className="workspace-table__cell workspace-table__cell--actions">
                         <div className="workspace-table__actions">
-                          <button
-                            type="button"
-                            onClick={() => onEdit(project)}
-                            className="workspace-table__action"
-                          >
-                            Düzenle
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => onDelete(project.id)}
-                            className="workspace-table__action workspace-table__action--danger"
-                          >
-                            Sil
-                          </button>
+                        <button
+                          type="button"
+                          onClick={() => onEdit(project)}
+                          className="workspace-table__action workspace-table__action--edit"
+                        >
+                          Düzenle
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => onDelete(project.id)}
+                          className="workspace-table__action workspace-table__action--danger"
+                        >
+                          Sil
+                        </button>
                         </div>
                       </td>
                     </tr>

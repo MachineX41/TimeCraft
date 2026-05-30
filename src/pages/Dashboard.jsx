@@ -4,6 +4,7 @@ import ProjectTable from '../components/ProjectTable'
 import ProjectDrawer from '../components/ProjectDrawer'
 import DeleteConfirmModal from '../components/DeleteConfirmModal'
 import Footer from '../components/Footer'
+import GradualBlur from '../components/GradualBlur'
 
 export default function Dashboard({
   projects,
@@ -77,6 +78,18 @@ export default function Dashboard({
         project={deletingProject}
         onCancel={onCancelDelete}
         onConfirm={onConfirmDelete}
+      />
+
+      <GradualBlur
+        target="page"
+        position="bottom"
+        height="7rem"
+        strength={2}
+        divCount={5}
+        curve="bezier"
+        exponential
+        opacity={1}
+        style={{ zIndex: 45 }}
       />
     </div>
   )
