@@ -1,4 +1,5 @@
 import Navbar from '../components/Navbar'
+import PageHero from '../components/PageHero'
 import MetricsRow from '../components/MetricsRow'
 import ProjectTable from '../components/ProjectTable'
 import ProjectDrawer from '../components/ProjectDrawer'
@@ -30,24 +31,7 @@ export default function Dashboard({
             <div className="x-page-header__overlay" />
           </div>
           <div className="x-page-header__body x-main__container">
-            <header className="x-hero">
-              <p className="x-hero__overline">
-                <span className="x-hero__overline-dot" aria-hidden="true" />
-                Freelancer workspace
-              </p>
-              <h1 className="x-hero__title">Projeler</h1>
-              <p className="x-hero__lead">
-                Zaman, ücret ve durum takibini tek bir panelden yönetin.
-                {projects.length > 0 && (
-                  <span className="x-hero__meta">
-                    <span className="x-hero__meta-sep" aria-hidden="true">
-                      ·
-                    </span>
-                    {projects.length} kayıt
-                  </span>
-                )}
-              </p>
-            </header>
+            <PageHero projectCount={projects.length} />
             <MetricsRow projects={projects} />
           </div>
         </section>

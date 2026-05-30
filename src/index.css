@@ -1046,7 +1046,6 @@ body {
 .x-hero {
   max-width: 42rem;
   margin-bottom: 0;
-  animation: workspace-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .x-hero__overline {
@@ -1132,8 +1131,6 @@ body {
   box-shadow:
     0 20px 48px rgb(0 0 0 / 0.28),
     inset 0 1px 0 rgb(255 255 255 / 0.1);
-  animation: workspace-fade-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(0.08s + var(--stat-index, 0) * 0.07s);
   transition:
     transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
     border-color 0.35s ease,
@@ -1223,18 +1220,6 @@ body {
   background: var(--color-x-surface);
 }
 
-@keyframes workspace-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .x-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -1280,7 +1265,6 @@ body {
 /* workspace — proje listesi paneli */
 .workspace {
   font-family: 'Google Sans', var(--font-sans);
-  animation: workspace-fade-up 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
 }
 
 .workspace__intro {
@@ -1450,23 +1434,9 @@ body {
 
 .workspace-table__row {
   border-bottom: 1px solid rgb(255 255 255 / 0.05);
-  animation: workspace-row-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(var(--row-index, 0) * 0.035s);
   transition:
     background-color 0.28s ease,
     transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@keyframes workspace-row-in {
-  from {
-    opacity: 0;
-    transform: translateX(-6px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 
 .workspace-table__row:hover {
