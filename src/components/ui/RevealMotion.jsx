@@ -72,6 +72,21 @@ export function revealRow(reduceMotion, x = -6) {
   }
 }
 
+export function tableRowVariants(reduceMotion, animateIn = true) {
+  const row = revealRow(reduceMotion, -8)
+
+  return {
+    hidden: animateIn ? row.hidden : { opacity: 1, x: 0 },
+    visible: row.visible,
+    exit: {
+      opacity: 0,
+      x: reduceMotion ? 0 : -28,
+      filter: reduceMotion ? 'blur(0px)' : 'blur(6px)',
+      transition: revealTransition(reduceMotion, 0.42),
+    },
+  }
+}
+
 export function revealList(reduceMotion, staggerChildren = 0.08, delayChildren = 0.1) {
   return {
     hidden: {},

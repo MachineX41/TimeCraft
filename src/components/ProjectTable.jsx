@@ -10,8 +10,8 @@ import {
   revealBlock,
   revealLine,
   revealList,
-  revealRow,
   revealTransition,
+  tableRowVariants,
 } from './ui/RevealMotion'
 import { matchesProjectSearch } from '../utils/projectSearch'
 import {
@@ -216,21 +216,23 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
                 >
                   <table className="workspace-table workspace-table--body">
                     <TableColGroup />
-                    <motion.tbody
-                      variants={revealList(reduceMotion, 0.05, 0.04)}
-                      initial="hidden"
-                      animate="visible"
-                    >
+                    <tbody>
+                      <AnimatePresence initial={false} mode="popLayout">
                       {filtered.map((project, rowIndex) => {
                         const earnings = calculateProjectEarnings(project)
 
                         return (
                           <motion.tr
                             key={project.id}
+                            layout
                             className="workspace-table__row"
-                            variants={
-                              rowIndex < MAX_VISIBLE_ROWS ? revealRow(reduceMotion) : false
-                            }
+                            variants={tableRowVariants(
+                              reduceMotion,
+                              rowIndex < MAX_VISIBLE_ROWS,
+                            )}
+                            initial={rowIndex < MAX_VISIBLE_ROWS ? 'hidden' : false}
+                            animate="visible"
+                            exit="exit"
                           >
                             <td className="workspace-table__cell workspace-table__cell--primary">
                               <p className="workspace-table__title">{project.projectTitle}</p>
@@ -271,7 +273,8 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
                           </motion.tr>
                         )
                       })}
-                    </motion.tbody>
+                      </AnimatePresence>
+                    </tbody>
                   </table>
                 </div>
               </div>
