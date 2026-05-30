@@ -98,14 +98,11 @@ function ProjectDrawerDetail({ project, onClose, onEdit, onRequestDelete, isBusy
 
   return (
     <div className="drawer-detail">
-      <div className="drawer-scroll drawer-body">
-        <section className="drawer-detail__intro">
-          <StatusBadge status={project.status} />
-          <h3 className="drawer-detail__title">{project.projectTitle}</h3>
-          <p className="drawer-detail__client">{project.clientName}</p>
-        </section>
-
-        <section className="drawer-detail__section" aria-label="Proje özeti ve bilgiler">
+      <div className="drawer-scroll drawer-body drawer-body--detail">
+        <section
+          className="drawer-detail__section drawer-detail__section--lead"
+          aria-label="Proje özeti ve bilgiler"
+        >
           <BorderGlow {...DRAWER_DETAIL_STAT_GLOW} className="drawer-detail-card">
             <div className="drawer-detail-card__inner">
               <div className="drawer-detail-card__metrics">

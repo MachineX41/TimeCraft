@@ -2305,27 +2305,12 @@ body {
   flex-direction: column;
 }
 
-.drawer-detail__intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.625rem;
+.drawer-body--detail {
+  padding-top: 0.25rem;
 }
 
-.drawer-detail__title {
-  margin: 0;
-  font-family: 'Google Sans', var(--font-sans);
-  font-size: 1.25rem;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
-  color: #fff;
-}
-
-.drawer-detail__client {
-  margin: 0;
-  font-size: 0.875rem;
-  color: rgb(255 255 255 / 0.5);
+.drawer-detail__section--lead {
+  margin-top: 0;
 }
 
 .drawer-detail__section {
