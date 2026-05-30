@@ -13,6 +13,7 @@ import {
   revealRow,
   revealTransition,
 } from './ui/RevealMotion'
+import { matchesProjectSearch } from '../utils/projectSearch'
 import {
   calculateProjectEarnings,
   formatCurrency,
@@ -43,6 +44,7 @@ function formatDate(iso) {
 }
 
 function filterProjects(projects, filter) {
+  if (filter === 'pending') return projects.filter((p) => p.status === 'Beklemede')
   if (filter === 'active') return projects.filter((p) => p.status === 'Devam Ediyor')
   if (filter === 'done') return projects.filter((p) => p.status === 'Tamamlandı')
   return projects
@@ -51,9 +53,12 @@ function filterProjects(projects, filter) {
 export default function ProjectTable({ projects, onEdit, onDelete, onAddProject }) {
   const reduceMotion = useReducedMotion()
   const [filter, setFilter] = useState('all')
-  const filtered = filterProjects(projects, filter)
+  const [searchQuery, setSearchQuery] = useState('')
+  const tabFiltered = filterProjects(projects, filter)
+  const filtered = tabFiltered.filter((p) => matchesProjectSearch(p, searchQuery))
   const filterCounts = {
     all: projects.length,
+    pending: projects.filter((p) => p.status === 'Beklemede').length,
     active: projects.filter((p) => p.status === 'Devam Ediyor').length,
     done: projects.filter((p) => p.status === 'Tamamlandı').length,
   }
@@ -109,14 +114,19 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
         >
         <WorkspaceFilterBar
           filter={filter}
-          onChange={setFilter}
+          onChange={(id) => {
+            setFilter(id)
+            setSearchQuery('')
+          }}
           counts={filterCounts}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
         />
 
         <AnimatePresence mode="wait">
           {filtered.length === 0 ? (
             <motion.div
-              key={`empty-${filter}`}
+              key={`empty-${filter}-${searchQuery}`}
               className="workspace-empty"
               variants={revealBlock(reduceMotion, 0.08, 0.06)}
               initial="hidden"
@@ -128,25 +138,52 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
               }}
             >
               <motion.p className="workspace-empty__title" variants={revealLine(reduceMotion)}>
-                <span className="sr-only">Proje bulunamadı</span>
-                <RevealWords text="Proje bulunamadı" reduceMotion={reduceMotion} />
+                <span className="sr-only">
+                  {searchQuery.trim() ? 'Arama sonucu bulunamadı' : 'Proje bulunamadı'}
+                </span>
+                <RevealWords
+                  text={searchQuery.trim() ? 'Arama sonucu bulunamadı' : 'Proje bulunamadı'}
+                  reduceMotion={reduceMotion}
+                />
               </motion.p>
               <motion.p className="workspace-empty__text" variants={revealLine(reduceMotion)}>
-                <span className="sr-only">Yeni bir proje ekleyerek başlayın.</span>
-                <RevealWords text="Yeni bir proje ekleyerek başlayın." reduceMotion={reduceMotion} />
+                <span className="sr-only">
+                  {searchQuery.trim()
+                    ? 'Farklı bir anahtar kelime deneyin.'
+                    : 'Yeni bir proje ekleyerek başlayın.'}
+                </span>
+                <RevealWords
+                  text={
+                    searchQuery.trim()
+                      ? 'Farklı bir anahtar kelime deneyin.'
+                      : 'Yeni bir proje ekleyerek başlayın.'
+                  }
+                  reduceMotion={reduceMotion}
+                />
               </motion.p>
-              <motion.button
-                type="button"
-                onClick={onAddProject}
-                variants={revealLine(reduceMotion)}
-                className="btn-primary workspace-empty__cta"
-              >
-                Yeni proje
-              </motion.button>
+              {searchQuery.trim() ? (
+                <motion.button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  variants={revealLine(reduceMotion)}
+                  className="btn-primary workspace-empty__cta"
+                >
+                  Aramayı temizle
+                </motion.button>
+              ) : (
+                <motion.button
+                  type="button"
+                  onClick={onAddProject}
+                  variants={revealLine(reduceMotion)}
+                  className="btn-primary workspace-empty__cta"
+                >
+                  Yeni proje
+                </motion.button>
+              )}
             </motion.div>
           ) : (
             <motion.div
-              key={`table-${filter}`}
+              key={`table-${filter}-${searchQuery}`}
               className="workspace-table-wrap"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
