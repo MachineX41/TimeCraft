@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import BorderGlow from './BorderGlow'
 import StatusBadge from './StatusBadge'
+import WorkspaceFilterBar from './WorkspaceFilterBar'
 import { WORKSPACE_BORDER_GLOW } from '../constants/workspaceBorderGlow'
 import {
   RevealChars,
@@ -16,12 +17,6 @@ import {
   calculateProjectEarnings,
   formatCurrency,
 } from '../utils/projectStats'
-
-const FILTERS = [
-  { id: 'all', label: 'Tümü' },
-  { id: 'active', label: 'Aktif' },
-  { id: 'done', label: 'Tamamlanan' },
-]
 
 const INTRO_LEAD = 'Ücret, mesai ve durumu filtreleyerek görüntüleyin.'
 const MAX_VISIBLE_ROWS = 7
@@ -57,6 +52,11 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
   const reduceMotion = useReducedMotion()
   const [filter, setFilter] = useState('all')
   const filtered = filterProjects(projects, filter)
+  const filterCounts = {
+    all: projects.length,
+    active: projects.filter((p) => p.status === 'Devam Ediyor').length,
+    done: projects.filter((p) => p.status === 'Tamamlandı').length,
+  }
 
   return (
     <motion.section
@@ -107,30 +107,11 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
           className="workspace-panel-glow__content"
           variants={revealLine(reduceMotion, 16, 10)}
         >
-        <div className="workspace-toolbar">
-          <motion.div
-            className="workspace-toolbar__track"
-            role="tablist"
-            aria-label="Proje filtresi"
-            variants={revealList(reduceMotion, 0.06, 0.12)}
-            initial="hidden"
-            animate="visible"
-          >
-            {FILTERS.map((f) => (
-              <motion.button
-                key={f.id}
-                type="button"
-                role="tab"
-                aria-selected={filter === f.id}
-                onClick={() => setFilter(f.id)}
-                variants={revealLine(reduceMotion, 6, 4)}
-                className={`workspace-filter${filter === f.id ? ' workspace-filter--active' : ''}`}
-              >
-                {f.label}
-              </motion.button>
-            ))}
-          </motion.div>
-        </div>
+        <WorkspaceFilterBar
+          filter={filter}
+          onChange={setFilter}
+          counts={filterCounts}
+        />
 
         <AnimatePresence mode="wait">
           {filtered.length === 0 ? (
