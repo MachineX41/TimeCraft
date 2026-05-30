@@ -10,3 +10,10 @@ export const WORKSPACE_BORDER_GLOW = {
   animated: false,
   colors: ['#c084fc', '#f472b6', '#38bdf8'],
 }
+
+/** Drawer form alanları — aynı glow, kompakt köşe yarıçapı */
+export const DRAWER_FIELD_BORDER_GLOW = {
+  ...WORKSPACE_BORDER_GLOW,
+  borderRadius: 20,
+  glowRadius: 32,
+}

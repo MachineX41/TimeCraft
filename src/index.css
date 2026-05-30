@@ -2315,7 +2315,16 @@ body {
   color: rgb(255 255 255 / 0.5);
 }
 
-/* premium glassmorphism — blur wrapper + gradient kenar ışığı */
+.drawer-field-glow.border-glow-card {
+  width: 100%;
+}
+
+.drawer-field-glow .border-glow-inner {
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+/* premium glassmorphism — İptal butonu */
 .drawer-glass {
   position: relative;
   isolation: isolate;
@@ -2402,8 +2411,6 @@ body {
   );
 }
 
-.drawer-glass:has(.drawer-input:focus),
-.drawer-glass:has(.drawer-select:focus),
 .drawer-glass:focus-visible {
   background: linear-gradient(
     145deg,
@@ -2459,7 +2466,7 @@ body {
 .drawer-footer {
   display: flex;
   flex-shrink: 0;
-  gap: 0.5rem;
+  gap: 0.75rem;
   padding: 0.875rem 1.5rem 1.25rem;
   background: transparent;
 }
@@ -2519,7 +2526,7 @@ body {
   pointer-events: none;
 }
 
-.drawer-form--exiting .drawer-footer .drawer-btn--ghost {
+.drawer-form--exiting .drawer-footer .btn-ghost {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.22s ease;

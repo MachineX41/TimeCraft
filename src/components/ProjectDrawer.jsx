@@ -1,7 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
+import { DRAWER_FIELD_BORDER_GLOW } from '../constants/workspaceBorderGlow'
 import { PROJECT_STATUSES } from '../interfaces/projectSchema'
 import { handleCtaPointerEnter, handleCtaPointerLeave } from '../utils/ctaButton'
+import BorderGlow from './BorderGlow'
 import ColourfulText from './ui/ColourfulText'
+
+function DrawerFieldGlow({ children }) {
+  return (
+    <BorderGlow {...DRAWER_FIELD_BORDER_GLOW} className="drawer-field-glow">
+      {children}
+    </BorderGlow>
+  )
+}
 
 const FORM_EXIT_MS = 300
 const COLLAPSE_MS = 420
@@ -75,7 +85,7 @@ function ProjectDrawerForm({ project, onClose, onSave, savePhase }) {
             <label htmlFor="clientName" className="drawer-label">
               Müşteri
             </label>
-            <div className="drawer-glass">
+            <DrawerFieldGlow>
               <input
                 id="clientName"
                 name="clientName"
@@ -86,14 +96,14 @@ function ProjectDrawerForm({ project, onClose, onSave, savePhase }) {
                 placeholder="Şirket veya kişi adı"
                 className="drawer-input"
               />
-            </div>
+            </DrawerFieldGlow>
           </div>
 
           <div className="drawer-field">
             <label htmlFor="projectTitle" className="drawer-label">
               Proje
             </label>
-            <div className="drawer-glass">
+            <DrawerFieldGlow>
               <input
                 id="projectTitle"
                 name="projectTitle"
@@ -104,7 +114,7 @@ function ProjectDrawerForm({ project, onClose, onSave, savePhase }) {
                 placeholder="Proje adı"
                 className="drawer-input"
               />
-            </div>
+            </DrawerFieldGlow>
           </div>
         </section>
 
@@ -114,7 +124,7 @@ function ProjectDrawerForm({ project, onClose, onSave, savePhase }) {
               <label htmlFor="hourlyRate" className="drawer-label">
                 Saatlik ücret
               </label>
-              <div className="drawer-glass">
+              <DrawerFieldGlow>
                 <input
                   id="hourlyRate"
                   name="hourlyRate"
@@ -127,13 +137,13 @@ function ProjectDrawerForm({ project, onClose, onSave, savePhase }) {
                   className="drawer-input"
                   placeholder="0"
                 />
-              </div>
+              </DrawerFieldGlow>
             </div>
             <div className="drawer-field">
               <label htmlFor="hoursWorked" className="drawer-label">
                 Mesai (saat)
               </label>
-              <div className="drawer-glass">
+              <DrawerFieldGlow>
                 <input
                   id="hoursWorked"
                   name="hoursWorked"
@@ -146,7 +156,7 @@ function ProjectDrawerForm({ project, onClose, onSave, savePhase }) {
                   className="drawer-input"
                   placeholder="0"
                 />
-              </div>
+              </DrawerFieldGlow>
             </div>
           </div>
         </section>
@@ -156,7 +166,7 @@ function ProjectDrawerForm({ project, onClose, onSave, savePhase }) {
             <label htmlFor="status" className="drawer-label">
               Durum
             </label>
-            <div className="drawer-glass">
+            <DrawerFieldGlow>
               <select
                 id="status"
                 name="status"
@@ -170,7 +180,7 @@ function ProjectDrawerForm({ project, onClose, onSave, savePhase }) {
                   </option>
                 ))}
               </select>
-            </div>
+            </DrawerFieldGlow>
           </div>
         </section>
       </div>
@@ -180,7 +190,7 @@ function ProjectDrawerForm({ project, onClose, onSave, savePhase }) {
           type="button"
           onClick={onClose}
           disabled={isBusy}
-          className="drawer-btn drawer-btn--ghost drawer-glass drawer-glass--pill"
+          className="btn-ghost flex-1"
         >
           İptal
         </button>
