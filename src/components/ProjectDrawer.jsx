@@ -176,7 +176,7 @@ function ProjectDrawerDetail({ project, onClose, onEdit, onRequestDelete, isBusy
           disabled={isBusy}
           className="btn-ghost flex-1"
         >
-          Kapat
+          İptal
         </button>
         <button
           type="button"
