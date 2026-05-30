@@ -1,5 +1,7 @@
 import { motion, useReducedMotion } from 'motion/react'
+import BorderGlow from './BorderGlow'
 import { calculateKPIs, formatCurrency } from '../utils/projectStats'
+import { WORKSPACE_BORDER_GLOW } from '../constants/workspaceBorderGlow'
 import {
   RevealChars,
   RevealWords,
@@ -26,18 +28,20 @@ export default function MetricsRow({ projects }) {
       animate="visible"
     >
       {metrics.map((metric) => (
-        <motion.article key={metric.id} className="x-stat-card" variants={revealLine(reduceMotion, 14, 8)}>
-          <span className="x-stat-card__rim" aria-hidden="true" />
-          <span className="x-stat-card__shine" aria-hidden="true" />
-          <p className="x-stat-card__value tabular-nums">
-            <span className="sr-only">{metric.value}</span>
-            <RevealChars text={metric.value} reduceMotion={reduceMotion} duration={0.36} />
-          </p>
-          <p className="x-stat-card__label">
-            <span className="sr-only">{metric.label}</span>
-            <RevealWords text={metric.label} reduceMotion={reduceMotion} duration={0.34} />
-          </p>
-        </motion.article>
+        <motion.div key={metric.id} variants={revealLine(reduceMotion, 14, 8)} className="x-stat-slot">
+          <BorderGlow {...WORKSPACE_BORDER_GLOW} className="x-stat-glow">
+            <div className="x-stat-glow__content">
+              <p className="x-stat-glow__value tabular-nums">
+                <span className="sr-only">{metric.value}</span>
+                <RevealChars text={metric.value} reduceMotion={reduceMotion} duration={0.36} />
+              </p>
+              <p className="x-stat-glow__label">
+                <span className="sr-only">{metric.label}</span>
+                <RevealWords text={metric.label} reduceMotion={reduceMotion} duration={0.34} />
+              </p>
+            </div>
+          </BorderGlow>
+        </motion.div>
       ))}
     </motion.div>
   )

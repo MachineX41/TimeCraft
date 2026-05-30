@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import BorderGlow from './BorderGlow'
 import StatusBadge from './StatusBadge'
+import { WORKSPACE_BORDER_GLOW } from '../constants/workspaceBorderGlow'
 import {
   RevealChars,
   RevealWords,
@@ -22,6 +24,20 @@ const FILTERS = [
 ]
 
 const INTRO_LEAD = 'Ücret, mesai ve durumu filtreleyerek görüntüleyin.'
+const MAX_VISIBLE_ROWS = 7
+
+function TableColGroup() {
+  return (
+    <colgroup>
+      <col className="workspace-table__col workspace-table__col--project" />
+      <col className="workspace-table__col workspace-table__col--rate" />
+      <col className="workspace-table__col workspace-table__col--hours" />
+      <col className="workspace-table__col workspace-table__col--earnings" />
+      <col className="workspace-table__col workspace-table__col--status" />
+      <col className="workspace-table__col workspace-table__col--actions" />
+    </colgroup>
+  )
+}
 
 function formatDate(iso) {
   return new Intl.DateTimeFormat('tr-TR', {
@@ -61,23 +77,36 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
             <RevealWords text={INTRO_LEAD} reduceMotion={reduceMotion} />
           </motion.p>
         </div>
-        <motion.p
-          className="workspace__count tabular-nums"
+        <motion.div
+          className="workspace__count-slot"
           variants={revealLine(reduceMotion, 8, 6)}
         >
-          <span className="sr-only">{filtered.length} kayıt</span>
-          <span className="workspace__count-value" aria-hidden="true">
-            <RevealChars
-              text={String(filtered.length)}
-              reduceMotion={reduceMotion}
-              duration={0.32}
-            />
-          </span>
-          <span className="workspace__count-label">kayıt</span>
-        </motion.p>
+          <BorderGlow
+            {...WORKSPACE_BORDER_GLOW}
+            borderRadius={9999}
+            glowRadius={28}
+            className="workspace-count-glow"
+          >
+            <p className="workspace-count-glow__content tabular-nums">
+              <span className="sr-only">{filtered.length} kayıt</span>
+              <span className="workspace-count-glow__value" aria-hidden="true">
+                <RevealChars
+                  text={String(filtered.length)}
+                  reduceMotion={reduceMotion}
+                  duration={0.32}
+                />
+              </span>
+              <span className="workspace-count-glow__label">kayıt</span>
+            </p>
+          </BorderGlow>
+        </motion.div>
       </motion.header>
 
-      <motion.div className="workspace__panel" variants={revealLine(reduceMotion, 16, 10)}>
+      <BorderGlow {...WORKSPACE_BORDER_GLOW} className="workspace-panel-glow">
+        <motion.div
+          className="workspace-panel-glow__content"
+          variants={revealLine(reduceMotion, 16, 10)}
+        >
         <div className="workspace-toolbar">
           <motion.div
             className="workspace-toolbar__track"
@@ -142,79 +171,97 @@ export default function ProjectTable({ projects, onEdit, onDelete, onAddProject 
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={revealTransition(reduceMotion, 0.28)}
+              aria-label={
+                filtered.length > MAX_VISIBLE_ROWS
+                  ? `Proje tablosu, ${filtered.length} kayıt, kaydırarak görüntüleyin`
+                  : undefined
+              }
             >
-              <table className="workspace-table">
-                <thead>
-                  <tr>
-                    <th className="workspace-table__head">Proje</th>
-                    <th className="workspace-table__head">Ücret</th>
-                    <th className="workspace-table__head">Mesai</th>
-                    <th className="workspace-table__head">Kazanç</th>
-                    <th className="workspace-table__head">Durum</th>
-                    <th className="workspace-table__head workspace-table__head--actions">
-                      <span className="sr-only">İşlemler</span>
-                    </th>
-                  </tr>
-                </thead>
-                <motion.tbody
-                  variants={revealList(reduceMotion, 0.05, 0.04)}
-                  initial="hidden"
-                  animate="visible"
+              <div className="workspace-table-shell">
+                <table className="workspace-table workspace-table--head">
+                  <TableColGroup />
+                  <thead>
+                    <tr>
+                      <th className="workspace-table__head">Proje</th>
+                      <th className="workspace-table__head">Ücret</th>
+                      <th className="workspace-table__head">Mesai</th>
+                      <th className="workspace-table__head">Kazanç</th>
+                      <th className="workspace-table__head">Durum</th>
+                      <th className="workspace-table__head workspace-table__head--actions">
+                        <span className="sr-only">İşlemler</span>
+                      </th>
+                    </tr>
+                  </thead>
+                </table>
+                <div
+                  className={`workspace-table-body${filtered.length > MAX_VISIBLE_ROWS ? ' workspace-table-body--scroll' : ''}`}
                 >
-                  {filtered.map((project) => {
-                    const earnings = calculateProjectEarnings(project)
+                  <table className="workspace-table workspace-table--body">
+                    <TableColGroup />
+                    <motion.tbody
+                      variants={revealList(reduceMotion, 0.05, 0.04)}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      {filtered.map((project, rowIndex) => {
+                        const earnings = calculateProjectEarnings(project)
 
-                    return (
-                      <motion.tr
-                        key={project.id}
-                        className="workspace-table__row"
-                        variants={revealRow(reduceMotion)}
-                      >
-                        <td className="workspace-table__cell workspace-table__cell--primary">
-                          <p className="workspace-table__title">{project.projectTitle}</p>
-                          <p className="workspace-table__sub">
-                            {project.clientName} · {formatDate(project.createdAt)}
-                          </p>
-                        </td>
-                        <td className="workspace-table__cell workspace-table__cell--num">
-                          {formatCurrency(project.hourlyRate)}
-                        </td>
-                        <td className="workspace-table__cell workspace-table__cell--num">
-                          {project.hoursWorked} sa
-                        </td>
-                        <td className="workspace-table__cell workspace-table__cell--num workspace-table__cell--earnings">
-                          {formatCurrency(earnings)}
-                        </td>
-                        <td className="workspace-table__cell">
-                          <StatusBadge status={project.status} />
-                        </td>
-                        <td className="workspace-table__cell workspace-table__cell--actions">
-                          <div className="workspace-table__actions">
-                            <button
-                              type="button"
-                              onClick={() => onEdit(project)}
-                              className="workspace-table__action workspace-table__action--edit"
-                            >
-                              Düzenle
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => onDelete(project.id)}
-                              className="workspace-table__action workspace-table__action--danger"
-                            >
-                              Sil
-                            </button>
-                          </div>
-                        </td>
-                      </motion.tr>
-                    )
-                  })}
-                </motion.tbody>
-              </table>
+                        return (
+                          <motion.tr
+                            key={project.id}
+                            className="workspace-table__row"
+                            variants={
+                              rowIndex < MAX_VISIBLE_ROWS ? revealRow(reduceMotion) : false
+                            }
+                          >
+                            <td className="workspace-table__cell workspace-table__cell--primary">
+                              <p className="workspace-table__title">{project.projectTitle}</p>
+                              <p className="workspace-table__sub">
+                                {project.clientName} · {formatDate(project.createdAt)}
+                              </p>
+                            </td>
+                            <td className="workspace-table__cell workspace-table__cell--num">
+                              {formatCurrency(project.hourlyRate)}
+                            </td>
+                            <td className="workspace-table__cell workspace-table__cell--num">
+                              {project.hoursWorked} sa
+                            </td>
+                            <td className="workspace-table__cell workspace-table__cell--num workspace-table__cell--earnings">
+                              {formatCurrency(earnings)}
+                            </td>
+                            <td className="workspace-table__cell">
+                              <StatusBadge status={project.status} />
+                            </td>
+                            <td className="workspace-table__cell workspace-table__cell--actions">
+                              <div className="workspace-table__actions">
+                                <button
+                                  type="button"
+                                  onClick={() => onEdit(project)}
+                                  className="workspace-table__action workspace-table__action--edit"
+                                >
+                                  Düzenle
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => onDelete(project.id)}
+                                  className="workspace-table__action workspace-table__action--danger"
+                                >
+                                  Sil
+                                </button>
+                              </div>
+                            </td>
+                          </motion.tr>
+                        )
+                      })}
+                    </motion.tbody>
+                  </table>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
+        </motion.div>
+      </BorderGlow>
     </motion.section>
   )
 }
