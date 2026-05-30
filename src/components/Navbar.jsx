@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import MegaMenuContent from './MegaMenuContent'
 import { IconPlus } from './SidebarIcons'
 import { handleCtaPointerEnter, handleCtaPointerLeave } from '../utils/ctaButton'
 
@@ -143,30 +144,12 @@ export default function Navbar({ onAddProject }) {
 
       <div className="app-navbar__mega" aria-hidden={!hoveredId}>
         <div className="app-navbar__mega-panel">
-          {NAV_LINKS.map((link) => (
-            <div
-              key={link.id}
-              className={`app-navbar__mega-content${hoveredId === link.id ? ' app-navbar__mega-content--visible' : ''}`}
-              aria-hidden={hoveredId !== link.id}
-            >
-              <div className="app-navbar__mega-intro">
-                <p className="app-navbar__mega-label">{link.label}</p>
-                <p className="app-navbar__mega-desc">{link.description}</p>
-              </div>
-              <ul className="app-navbar__mega-links">
-                {link.items.map((item) => (
-                  <li key={item.label}>
-                    <a href={item.href} className="app-navbar__mega-link">
-                      <span>{item.label}</span>
-                      <span className="app-navbar__mega-arrow" aria-hidden="true">
-                        →
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {hoveredId ? (
+            <MegaMenuContent
+              key={hoveredId}
+              link={NAV_LINKS.find((item) => item.id === hoveredId) ?? NAV_LINKS[0]}
+            />
+          ) : null}
         </div>
       </div>
     </header>
