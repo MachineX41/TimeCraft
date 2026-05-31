@@ -13,7 +13,15 @@ Tek bir panelde net metrikler, anlık görünürlük ve sade bir dashboard deney
 [![Motion](https://img.shields.io/badge/Motion-12-FF4D9F?style=flat-square)](https://motion.dev)
 [![License](https://img.shields.io/badge/License-MIT-7C3AED?style=flat-square)](#lisans)
 
+[**Canlı Demo**](https://time-craft-two.vercel.app) · [**Kaynak**](https://github.com/MachineX41/TimeCraft) · [**Issues**](https://github.com/MachineX41/TimeCraft/issues)
+
 </div>
+
+<br />
+
+<p align="center">
+  <img src="public/readme.png" alt="TimeCraft Dashboard önizlemesi" width="100%" />
+</p>
 
 ---
 
@@ -85,8 +93,8 @@ TimeCraft, dağınık tablolar ve not defterleri yerine projelerinizi, çalış�
 
 ```bash
 # repo'yu klonlayın
-git clone https://github.com/<kullanici>/timecraft.git
-cd timecraft
+git clone https://github.com/MachineX41/TimeCraft.git
+cd TimeCraft
 
 # bağımlılıkları yükleyin
 npm install
