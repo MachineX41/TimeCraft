@@ -20,10 +20,15 @@ export default function MegaMenuContent({ link }) {
       animate="visible"
     >
       <div className="app-navbar__mega-intro">
-        <motion.p className="app-navbar__mega-label" variants={revealLine(reduceMotion)}>
-          <span className="sr-only">{link.label}</span>
-          <RevealChars text={link.label} reduceMotion={reduceMotion} />
-        </motion.p>
+        <div className="app-navbar__mega-title-wrap">
+          <span className="app-navbar__mega-label-blur" aria-hidden="true">
+            {link.label}
+          </span>
+          <motion.p className="app-navbar__mega-label" variants={revealLine(reduceMotion)}>
+            <span className="sr-only">{link.label}</span>
+            <RevealChars text={link.label} reduceMotion={reduceMotion} />
+          </motion.p>
+        </div>
         <motion.p className="app-navbar__mega-desc" variants={revealLine(reduceMotion)}>
           <span className="sr-only">{link.description}</span>
           <RevealWords text={link.description} reduceMotion={reduceMotion} />
