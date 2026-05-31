@@ -118,7 +118,7 @@ const DASHBOARD_NAV_LINKS = [
   },
 ]
 
-function NavLinkItem({ link, hoveredId, onNavEnter }) {
+function NavLinkItem({ link, hoveredId, onNavEnter, onNavigate }) {
   const isHovered = hoveredId === link.id
 
   if (link.href.startsWith('/#')) {
@@ -130,6 +130,7 @@ function NavLinkItem({ link, hoveredId, onNavEnter }) {
         aria-expanded={isHovered}
         onMouseEnter={() => onNavEnter(link.id)}
         onFocus={() => onNavEnter(link.id)}
+        onClick={onNavigate}
       >
         {link.label}
       </a>
@@ -144,6 +145,7 @@ function NavLinkItem({ link, hoveredId, onNavEnter }) {
       aria-expanded={isHovered}
       onMouseEnter={() => onNavEnter(link.id)}
       onFocus={() => onNavEnter(link.id)}
+      onClick={onNavigate}
     >
       {link.label}
     </Link>
@@ -172,6 +174,11 @@ export default function Navbar({ page = 'dashboard', onAddProject }) {
       if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current)
     }
   }, [])
+
+  useEffect(() => {
+    setMobileOpen(false)
+    setHoveredId(null)
+  }, [location.pathname])
 
   function clearLeaveTimer() {
     if (leaveTimerRef.current) {
@@ -226,6 +233,7 @@ export default function Navbar({ page = 'dashboard', onAddProject }) {
                   link={link}
                   hoveredId={hoveredId}
                   onNavEnter={handleNavEnter}
+                  onNavigate={() => setMobileOpen(false)}
                 />
               </li>
             ))}
@@ -236,7 +244,7 @@ export default function Navbar({ page = 'dashboard', onAddProject }) {
           <button
             type="button"
             onClick={onAddProject}
-            className="app-navbar__cta"
+            className={`app-navbar__cta${page === 'dashboard' ? ' app-navbar__cta--icon-only' : ''}`}
             aria-label={ctaLabel}
             onPointerEnter={handleCtaPointerEnter}
             onPointerLeave={handleCtaPointerLeave}

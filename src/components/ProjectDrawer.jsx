@@ -538,6 +538,7 @@ export default function ProjectDrawer({
         className={panelClassName}
         onMouseLeave={handleMouseLeave}
       >
+        <span className="drawer-panel__handle" aria-hidden="true" />
         <span className="drawer-panel__texture" aria-hidden="true" />
 
         <button

@@ -50,6 +50,74 @@ function filterProjects(projects, filter) {
   return projects
 }
 
+function ProjectCard({ project, onSelect, onEdit, onDelete }) {
+  const earnings = calculateProjectEarnings(project)
+
+  return (
+    <article
+      className="workspace-card"
+      role="button"
+      tabIndex={0}
+      aria-label={`${project.projectTitle} detayını aç`}
+      onClick={() => onSelect(project)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          onSelect(project)
+        }
+      }}
+    >
+      <div className="workspace-card__head">
+        <div className="workspace-card__titles">
+          <p className="workspace-card__title">{project.projectTitle}</p>
+          <p className="workspace-card__sub">
+            {project.clientName} · {formatDate(project.createdAt)}
+          </p>
+        </div>
+        <StatusBadge status={project.status} />
+      </div>
+
+      <dl className="workspace-card__metrics">
+        <div className="workspace-card__metric">
+          <dt>Ücret</dt>
+          <dd>{formatCurrency(project.hourlyRate)}</dd>
+        </div>
+        <div className="workspace-card__metric">
+          <dt>Mesai</dt>
+          <dd>{project.hoursWorked} sa</dd>
+        </div>
+        <div className="workspace-card__metric workspace-card__metric--accent">
+          <dt>Kazanç</dt>
+          <dd>{formatCurrency(earnings)}</dd>
+        </div>
+      </dl>
+
+      <div className="workspace-card__actions">
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation()
+            onEdit(project)
+          }}
+          className="workspace-table__action workspace-table__action--edit"
+        >
+          Düzenle
+        </button>
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation()
+            onDelete(project.id)
+          }}
+          className="workspace-table__action workspace-table__action--danger"
+        >
+          Sil
+        </button>
+      </div>
+    </article>
+  )
+}
+
 export default function ProjectTable({ projects, onSelect, onEdit, onDelete, onAddProject }) {
   const reduceMotion = useReducedMotion()
   const [filter, setFilter] = useState('all')
@@ -182,9 +250,31 @@ export default function ProjectTable({ projects, onSelect, onEdit, onDelete, onA
               )}
             </motion.div>
           ) : (
+            <>
+            <motion.ul
+              key={`cards-${filter}-${searchQuery}`}
+              className="workspace-cards"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={revealTransition(reduceMotion, 0.28)}
+              aria-label={`Proje listesi, ${filtered.length} kayıt`}
+            >
+              {filtered.map((project) => (
+                <li key={project.id} className="workspace-cards__item">
+                  <ProjectCard
+                    project={project}
+                    onSelect={onSelect}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                  />
+                </li>
+              ))}
+            </motion.ul>
+
             <motion.div
               key={`table-${filter}-${searchQuery}`}
-              className="workspace-table-wrap"
+              className="workspace-table-wrap workspace-table-wrap--desktop"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -295,6 +385,7 @@ export default function ProjectTable({ projects, onSelect, onEdit, onDelete, onA
                 </div>
               </div>
             </motion.div>
+            </>
           )}
         </AnimatePresence>
         </motion.div>
