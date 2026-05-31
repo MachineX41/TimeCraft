@@ -53,6 +53,12 @@ body {
 #root {
   min-height: 100vh;
   background-color: #030305;
+  overflow-x: clip;
+}
+
+.page-transition {
+  width: 100%;
+  min-height: 100vh;
 }
 
 /* sayfa — düz #030305, gradient yok */

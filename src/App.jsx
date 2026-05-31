@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { AnimatePresence } from 'motion/react'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
+import PageTransition from './components/PageTransition'
 import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
 import { createEmptyProject } from './interfaces/projectSchema'
@@ -128,13 +130,41 @@ function DashboardApp() {
   )
 }
 
+function AppRoutes() {
+  const location = useLocation()
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [location.pathname])
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route
+          path="/"
+          element={
+            <PageTransition>
+              <Home />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PageTransition>
+              <DashboardApp />
+            </PageTransition>
+          }
+        />
+      </Routes>
+    </AnimatePresence>
+  )
+}
+
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<DashboardApp />} />
-      </Routes>
+      <AppRoutes />
     </BrowserRouter>
   )
 }
