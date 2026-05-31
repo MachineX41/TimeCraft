@@ -4,20 +4,14 @@ import { revealTransition } from './ui/RevealMotion'
 const pageVariants = (reduceMotion) => ({
   initial: {
     opacity: reduceMotion ? 1 : 0,
-    y: reduceMotion ? 0 : 14,
-    filter: reduceMotion ? 'blur(0px)' : 'blur(6px)',
   },
   animate: {
     opacity: 1,
-    y: 0,
-    filter: 'blur(0px)',
-    transition: revealTransition(reduceMotion, 0.5),
+    transition: revealTransition(reduceMotion, 0.48),
   },
   exit: {
     opacity: reduceMotion ? 1 : 0,
-    y: reduceMotion ? 0 : -10,
-    filter: reduceMotion ? 'blur(0px)' : 'blur(4px)',
-    transition: revealTransition(reduceMotion, 0.38),
+    transition: revealTransition(reduceMotion, 0.36),
   },
 })
 
@@ -32,7 +26,7 @@ export default function PageTransition({ children }) {
       animate="animate"
       exit="exit"
       variants={variants}
-      style={{ willChange: reduceMotion ? 'auto' : 'opacity, transform, filter' }}
+      style={{ willChange: reduceMotion ? 'auto' : 'opacity' }}
     >
       {children}
     </motion.div>

@@ -736,6 +736,8 @@ a.app-navbar__cta {
   top: 4.25rem;
   right: 0;
   bottom: 0;
+  height: calc(100dvh - 4.25rem);
+  height: calc(100svh - 4.25rem);
   z-index: 70;
   width: var(--drawer-collapsed);
   pointer-events: none;

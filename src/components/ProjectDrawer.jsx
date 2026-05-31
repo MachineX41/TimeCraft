@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, useReducedMotion } from 'motion/react'
 import {
   DRAWER_DETAIL_STAT_GLOW,
@@ -518,7 +519,7 @@ export default function ProjectDrawer({
     .filter(Boolean)
     .join(' ')
 
-  return (
+  return createPortal(
     <div
       className={`drawer-root${isOpen ? ' drawer-root--open' : ''}${savePhase === 'collapsing' ? ' drawer-root--closing' : ''}`}
     >
@@ -585,6 +586,7 @@ export default function ProjectDrawer({
           )}
         </div>
       </aside>
-    </div>
+    </div>,
+    document.body,
   )
 }
