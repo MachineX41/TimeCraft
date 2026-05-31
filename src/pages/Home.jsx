@@ -15,6 +15,9 @@ export default function Home() {
 
   return (
     <div className="app-bg home-page flex min-h-screen flex-col font-sans text-white antialiased">
+      <div className="home-page__ambient" aria-hidden="true" />
+      <div className="home-page__grid" aria-hidden="true" />
+
       <Navbar page="home" onAddProject={() => navigate('/dashboard')} />
 
       <div className="home-shell flex flex-1 flex-col">

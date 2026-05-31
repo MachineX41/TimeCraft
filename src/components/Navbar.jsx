@@ -69,6 +69,18 @@ const HOME_NAV_LINKS = [
 
 const DASHBOARD_NAV_LINKS = [
   {
+    id: 'home',
+    label: 'Ana Sayfa',
+    href: '/',
+    active: false,
+    description: 'Landing sayfasına dönün ve TimeCraft\'ı keşfedin.',
+    items: [
+      { label: 'Hero', href: '/' },
+      { label: 'Hakkında', href: '/#hakkimizda' },
+      { label: 'SSS', href: '/#sss' },
+    ],
+  },
+  {
     id: 'dashboard',
     label: 'Dashboard',
     href: '/dashboard',

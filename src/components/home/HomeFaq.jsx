@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import HomeReveal from './HomeReveal'
+import { revealBlock, revealLine, revealList } from '../ui/RevealMotion'
 
 const FAQ = [
   {
@@ -33,21 +35,28 @@ export default function HomeFaq() {
   const [openId, setOpenId] = useState(FAQ[0].id)
 
   return (
-    <section id="sss" className="home-section home-faq" aria-label="Sık sorulan sorular">
-      <header className="home-section__header">
-        <p className="home-section__eyebrow">SSS</p>
-        <h2 className="home-section__title">Merak edilenler</h2>
-        <p className="home-section__lead home-section__lead--narrow">
+    <HomeReveal id="sss" className="home-section home-faq" aria-label="Sık sorulan sorular">
+      <motion.header className="home-section__header" variants={revealBlock(reduceMotion, 0.07, 0)}>
+        <motion.p className="home-section__eyebrow" variants={revealLine(reduceMotion)}>
+          SSS
+        </motion.p>
+        <motion.h2 className="home-section__title" variants={revealLine(reduceMotion, 10, 8)}>
+          Merak edilenler
+        </motion.h2>
+        <motion.p
+          className="home-section__lead home-section__lead--narrow"
+          variants={revealLine(reduceMotion)}
+        >
           Kısa cevaplar, net yönlendirme.
-        </p>
-      </header>
+        </motion.p>
+      </motion.header>
 
-      <div className="home-faq__list">
+      <motion.div className="home-faq__list" variants={revealList(reduceMotion, 0.06, 0.04)}>
         {FAQ.map((item) => {
           const isOpen = openId === item.id
 
           return (
-            <div key={item.id} className="home-faq__item">
+            <motion.div key={item.id} className="home-faq__item" variants={revealLine(reduceMotion, 8, 4)}>
               <button
                 type="button"
                 className={`home-faq__trigger${isOpen ? ' home-faq__trigger--open' : ''}`}
@@ -73,10 +82,10 @@ export default function HomeFaq() {
                   </motion.div>
                 ) : null}
               </AnimatePresence>
-            </div>
+            </motion.div>
           )
         })}
-      </div>
-    </section>
+      </motion.div>
+    </HomeReveal>
   )
 }
