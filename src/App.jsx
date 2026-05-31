@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
+import Home from './pages/Home'
 import { createEmptyProject } from './interfaces/projectSchema'
 import {
   loadProjectsFromStorage,
   saveProjectsToStorage,
 } from './utils/projectStorage'
 
-export default function App() {
+function DashboardApp() {
   const [projects, setProjects] = useState(loadProjectsFromStorage)
   const [modalOpen, setModalOpen] = useState(false)
   const [drawerMode, setDrawerMode] = useState('create')
@@ -123,5 +125,16 @@ export default function App() {
       onCloseModal={closeModal}
       onSaveProject={handleSaveProject}
     />
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<DashboardApp />} />
+      </Routes>
+    </BrowserRouter>
   )
 }

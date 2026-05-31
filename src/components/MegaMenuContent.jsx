@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { motion, useReducedMotion } from 'motion/react'
 import {
   RevealChars,
@@ -41,12 +42,21 @@ export default function MegaMenuContent({ link }) {
       >
         {link.items.map((item) => (
           <motion.li key={item.label} variants={revealLine(reduceMotion)}>
-            <a href={item.href} className="app-navbar__mega-link">
-              <span>{item.label}</span>
-              <span className="app-navbar__mega-arrow" aria-hidden="true">
-                →
-              </span>
-            </a>
+            {item.href.startsWith('/#') || item.href.startsWith('http') ? (
+              <a href={item.href} className="app-navbar__mega-link">
+                <span>{item.label}</span>
+                <span className="app-navbar__mega-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            ) : (
+              <Link to={item.href} className="app-navbar__mega-link">
+                <span>{item.label}</span>
+                <span className="app-navbar__mega-arrow" aria-hidden="true">
+                  →
+                </span>
+              </Link>
+            )}
           </motion.li>
         ))}
       </motion.ul>

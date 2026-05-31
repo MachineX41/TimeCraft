@@ -1,11 +1,13 @@
+import { Link } from 'react-router-dom'
+
 const FOOTER_COLUMNS = [
   {
     title: 'Ürün',
     links: [
-      { label: 'Dashboard', href: '#' },
-      { label: 'Projeler', href: '#' },
-      { label: 'Metrikler', href: '#' },
-      { label: 'Raporlar', href: '#' },
+      { label: 'Ana Sayfa', href: '/' },
+      { label: 'Dashboard', href: '/dashboard' },
+      { label: 'Özellikler', href: '/#ozellikler' },
+      { label: 'Hakkında', href: '/#hakkimizda' },
     ],
   },
   {
@@ -20,7 +22,7 @@ const FOOTER_COLUMNS = [
   {
     title: 'Şirket',
     links: [
-      { label: 'Hakkında', href: '#' },
+      { label: 'Hakkında', href: '/#hakkimizda' },
       { label: 'İletişim', href: '#' },
       { label: 'Kariyer', href: '#' },
       { label: 'Blog', href: '#' },
@@ -52,7 +54,7 @@ export default function Footer() {
         <div className="site-footer__container">
           <div className="site-footer__main">
             <div className="site-footer__brand">
-              <a href="#" className="site-footer__logo-link" aria-label="TimeCraft ana sayfa">
+              <Link to="/" className="site-footer__logo-link" aria-label="TimeCraft ana sayfa">
                 <img
                   src="/timecraftlogo.svg"
                   alt=""
@@ -61,7 +63,7 @@ export default function Footer() {
                   height={293}
                   decoding="async"
                 />
-              </a>
+              </Link>
               <p className="site-footer__tagline">
                 Freelancer&apos;lar için zaman, ücret ve proje takibi. Tek panelde net
                 görünürlük.
@@ -75,9 +77,15 @@ export default function Footer() {
                   <ul className="site-footer__list">
                     {column.links.map((link) => (
                       <li key={link.label}>
-                        <a href={link.href} className="site-footer__link">
-                          {link.label}
-                        </a>
+                        {link.href.startsWith('/#') || link.href.startsWith('http') ? (
+                          <a href={link.href} className="site-footer__link">
+                            {link.label}
+                          </a>
+                        ) : (
+                          <Link to={link.href} className="site-footer__link">
+                            {link.label}
+                          </Link>
+                        )}
                       </li>
                     ))}
                   </ul>

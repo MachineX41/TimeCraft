@@ -1,48 +1,147 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import MegaMenuContent from './MegaMenuContent'
 import { IconPlus } from './SidebarIcons'
 import { handleCtaPointerEnter, handleCtaPointerLeave } from '../utils/ctaButton'
 
-const NAV_LINKS = [
+const HOME_NAV_LINKS = [
+  {
+    id: 'home',
+    label: 'Ana Sayfa',
+    href: '/',
+    active: true,
+    description: 'TimeCraft ile freelancer çalışma alanınızı keşfedin.',
+    items: [
+      { label: 'Hero', href: '/' },
+      { label: 'Hakkında', href: '/#hakkimizda' },
+      { label: 'Dashboard', href: '/dashboard' },
+    ],
+  },
+  {
+    id: 'about',
+    label: 'Hakkında',
+    href: '/#hakkimizda',
+    active: false,
+    description: 'TimeCraft\'ın amacı ve freelancer\'lara sunduğu değer.',
+    items: [
+      { label: 'Misyon', href: '/#hakkimizda' },
+      { label: 'Nasıl çalışır', href: '/#ozellikler' },
+      { label: 'Başlayın', href: '/dashboard' },
+    ],
+  },
+  {
+    id: 'features',
+    label: 'Özellikler',
+    href: '/#ozellikler',
+    active: false,
+    description: 'Proje, mesai ve ücret takibini tek panelde birleştirin.',
+    items: [
+      { label: 'Proje yönetimi', href: '/#ozellikler' },
+      { label: 'Zaman takibi', href: '/#ozellikler' },
+      { label: 'Ücret hesaplama', href: '/#ozellikler' },
+    ],
+  },
   {
     id: 'dashboard',
     label: 'Dashboard',
+    href: '/dashboard',
+    active: false,
+    description: 'Çalışma alanınıza geçin ve projelerinizi yönetin.',
+    items: [
+      { label: 'Genel bakış', href: '/dashboard' },
+      { label: 'Projeler', href: '/dashboard' },
+      { label: 'Metrikler', href: '/dashboard' },
+    ],
+  },
+]
+
+const DASHBOARD_NAV_LINKS = [
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    href: '/dashboard',
     active: true,
     description: 'Çalışma alanınıza genel bakış ve canlı metrikler.',
     items: [
-      { label: 'Genel bakış', href: '#' },
-      { label: 'Metrikler', href: '#' },
-      { label: 'Son aktiviteler', href: '#' },
+      { label: 'Genel bakış', href: '/dashboard' },
+      { label: 'Metrikler', href: '/dashboard' },
+      { label: 'Son aktiviteler', href: '/dashboard' },
     ],
   },
   {
     id: 'projects',
     label: 'Projeler',
+    href: '/dashboard',
     active: false,
     description: 'Tüm projelerinizi yönetin, düzenleyin ve takip edin.',
     items: [
-      { label: 'Tüm projeler', href: '#' },
-      { label: 'Yeni proje', href: '#' },
-      { label: 'Durum filtreleri', href: '#' },
+      { label: 'Tüm projeler', href: '/dashboard' },
+      { label: 'Yeni proje', href: '/dashboard' },
+      { label: 'Durum filtreleri', href: '/dashboard' },
     ],
   },
   {
     id: 'reports',
     label: 'Raporlar',
+    href: '/dashboard',
     active: false,
     description: 'Zaman ve gelir raporlarınızı dışa aktarın.',
     items: [
-      { label: 'Haftalık özet', href: '#' },
-      { label: 'Aylık rapor', href: '#' },
-      { label: 'Dışa aktar', href: '#' },
+      { label: 'Haftalık özet', href: '/dashboard' },
+      { label: 'Aylık rapor', href: '/dashboard' },
+      { label: 'Dışa aktar', href: '/dashboard' },
     ],
   },
 ]
 
-export default function Navbar({ onAddProject }) {
+function NavLinkItem({ link, hoveredId, onNavEnter }) {
+  const isHovered = hoveredId === link.id
+
+  if (link.href.startsWith('/#')) {
+    return (
+      <a
+        href={link.href}
+        className={`app-navbar__link ${link.active ? 'app-navbar__link--active' : ''}${isHovered ? ' app-navbar__link--hovered' : ''}`}
+        aria-current={link.active ? 'page' : undefined}
+        aria-expanded={isHovered}
+        onMouseEnter={() => onNavEnter(link.id)}
+        onFocus={() => onNavEnter(link.id)}
+      >
+        {link.label}
+      </a>
+    )
+  }
+
+  return (
+    <Link
+      to={link.href}
+      className={`app-navbar__link ${link.active ? 'app-navbar__link--active' : ''}${isHovered ? ' app-navbar__link--hovered' : ''}`}
+      aria-current={link.active ? 'page' : undefined}
+      aria-expanded={isHovered}
+      onMouseEnter={() => onNavEnter(link.id)}
+      onFocus={() => onNavEnter(link.id)}
+    >
+      {link.label}
+    </Link>
+  )
+}
+
+export default function Navbar({ page = 'dashboard', onAddProject }) {
+  const location = useLocation()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [hoveredId, setHoveredId] = useState(null)
   const leaveTimerRef = useRef(null)
+
+  const baseLinks = page === 'home' ? HOME_NAV_LINKS : DASHBOARD_NAV_LINKS
+  const navLinks = baseLinks.map((link) => ({
+    ...link,
+    active:
+      page === 'home'
+        ? link.id === 'home' && location.pathname === '/'
+        : link.id === 'dashboard' && location.pathname.startsWith('/dashboard'),
+  }))
+
+  const ctaLabel = page === 'home' ? 'Başla' : 'Yeni proje'
 
   useEffect(() => {
     return () => {
@@ -80,7 +179,7 @@ export default function Navbar({ onAddProject }) {
       onMouseLeave={handleHeaderLeave}
     >
       <div className="app-navbar__bar">
-        <a href="#" className="app-navbar__brand" aria-label="TimeCraft ana sayfa">
+        <Link to="/" className="app-navbar__brand" aria-label="TimeCraft ana sayfa">
           <img
             src="/timecraftlogo.svg"
             alt=""
@@ -89,7 +188,7 @@ export default function Navbar({ onAddProject }) {
             height={293}
             decoding="async"
           />
-        </a>
+        </Link>
 
         <nav
           id="app-navbar-nav"
@@ -97,18 +196,13 @@ export default function Navbar({ onAddProject }) {
           aria-label="Ana menü"
         >
           <ul className="app-navbar__list">
-            {NAV_LINKS.map(({ id, label, active }) => (
-              <li key={id}>
-                <a
-                  href="#"
-                  className={`app-navbar__link ${active ? 'app-navbar__link--active' : ''}${hoveredId === id ? ' app-navbar__link--hovered' : ''}`}
-                  aria-current={active ? 'page' : undefined}
-                  aria-expanded={hoveredId === id}
-                  onMouseEnter={() => handleNavEnter(id)}
-                  onFocus={() => handleNavEnter(id)}
-                >
-                  {label}
-                </a>
+            {navLinks.map((link) => (
+              <li key={link.id}>
+                <NavLinkItem
+                  link={link}
+                  hoveredId={hoveredId}
+                  onNavEnter={handleNavEnter}
+                />
               </li>
             ))}
           </ul>
@@ -119,13 +213,15 @@ export default function Navbar({ onAddProject }) {
             type="button"
             onClick={onAddProject}
             className="app-navbar__cta"
-            aria-label="Yeni proje"
+            aria-label={ctaLabel}
             onPointerEnter={handleCtaPointerEnter}
             onPointerLeave={handleCtaPointerLeave}
           >
             <span className="app-navbar__cta-inner">
-              <span className="app-navbar__cta-label">Yeni proje</span>
-              <IconPlus className="app-navbar__cta-icon h-4 w-4 md:hidden" />
+              <span className="app-navbar__cta-label">{ctaLabel}</span>
+              {page === 'dashboard' ? (
+                <IconPlus className="app-navbar__cta-icon h-4 w-4 md:hidden" />
+              ) : null}
             </span>
           </button>
 
@@ -147,7 +243,7 @@ export default function Navbar({ onAddProject }) {
           {hoveredId ? (
             <MegaMenuContent
               key={hoveredId}
-              link={NAV_LINKS.find((item) => item.id === hoveredId) ?? NAV_LINKS[0]}
+              link={navLinks.find((item) => item.id === hoveredId) ?? navLinks[0]}
             />
           ) : null}
         </div>

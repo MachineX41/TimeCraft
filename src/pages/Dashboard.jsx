@@ -25,7 +25,7 @@ export default function Dashboard({
 }) {
   return (
     <div className="app-bg flex min-h-screen flex-col font-sans text-white antialiased">
-      <Navbar onAddProject={onAddProject} />
+      <Navbar page="dashboard" onAddProject={onAddProject} />
 
       <div className="dashboard-shell flex flex-1 flex-col">
         <section className="x-page-header" aria-label="Sayfa başlığı">
