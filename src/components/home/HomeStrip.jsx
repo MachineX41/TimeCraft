@@ -1,3 +1,6 @@
+import { motion, useReducedMotion } from 'motion/react'
+import { revealBlock, revealLine } from '../ui/RevealMotion'
+
 const ITEMS = [
   'Proje takibi',
   'Mesai kaydı',
@@ -8,11 +11,19 @@ const ITEMS = [
 ]
 
 export default function HomeStrip() {
+  const reduceMotion = useReducedMotion()
   const loop = [...ITEMS, ...ITEMS]
 
   return (
-    <section className="home-strip" aria-label="Platform yetenekleri">
-      <div className="home-strip__track" aria-hidden="true">
+    <motion.section
+      className="home-strip"
+      aria-label="Platform yetenekleri"
+      variants={revealBlock(reduceMotion, 0.06, 0)}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.4 }}
+    >
+      <motion.div className="home-strip__track" variants={revealLine(reduceMotion, 10, 4)}>
         <div className="home-strip__row">
           {loop.map((item, index) => (
             <span key={`${item}-${index}`} className="home-strip__item">
@@ -20,7 +31,7 @@ export default function HomeStrip() {
             </span>
           ))}
         </div>
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   )
 }

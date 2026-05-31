@@ -1,12 +1,3 @@
-import { motion, useReducedMotion } from 'motion/react'
-import {
-  RevealChars,
-  RevealWords,
-  revealBlock,
-  revealLine,
-  revealList,
-} from '../ui/RevealMotion'
-
 const FEATURES = [
   {
     id: 'projects',
@@ -30,45 +21,18 @@ const FEATURES = [
   },
 ]
 
-const INTRO_LEAD = 'Net, hızlı ve odaklı bir çalışma alanı.'
-
 export default function HomeFeatures() {
-  const reduceMotion = useReducedMotion()
-
   return (
-    <motion.section
-      id="ozellikler"
-      className="home-section home-features"
-      aria-label="Özellikler"
-      variants={revealBlock(reduceMotion, 0.08, 0.04)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.15 }}
-    >
-      <motion.header className="home-section__header home-features__intro" variants={revealBlock(reduceMotion, 0.07, 0)}>
-        <motion.p className="home-section__eyebrow" variants={revealLine(reduceMotion)}>
-          Özellikler
-        </motion.p>
-        <motion.h2 className="home-section__title home-features__title" variants={revealLine(reduceMotion, 10, 8)}>
-          <span className="sr-only">Neden TimeCraft?</span>
-          <RevealChars text="Neden TimeCraft?" reduceMotion={reduceMotion} />
-        </motion.h2>
-        <motion.p className="home-section__lead home-features__lead" variants={revealLine(reduceMotion)}>
-          <span className="sr-only">{INTRO_LEAD}</span>
-          <RevealWords text={INTRO_LEAD} reduceMotion={reduceMotion} />
-        </motion.p>
-      </motion.header>
+    <section id="ozellikler" className="home-section home-features" aria-label="Özellikler">
+      <header className="home-section__header home-features__intro">
+        <p className="home-section__eyebrow">Özellikler</p>
+        <h2 className="home-section__title">Neden TimeCraft?</h2>
+        <p className="home-section__lead">Net, hızlı ve odaklı bir çalışma alanı.</p>
+      </header>
 
-      <motion.ul
-        className="home-features-list"
-        variants={revealList(reduceMotion, 0.07, 0.04)}
-      >
+      <ul className="home-features-list">
         {FEATURES.map((feature, index) => (
-          <motion.li
-            key={feature.id}
-            className="home-features-item"
-            variants={revealLine(reduceMotion, 10, 6)}
-          >
+          <li key={feature.id} className="home-features-item">
             <span className="home-features-item__index" aria-hidden="true">
               {String(index + 1).padStart(2, '0')}
             </span>
@@ -76,9 +40,9 @@ export default function HomeFeatures() {
               <h3 className="home-features-item__title">{feature.title}</h3>
               <p className="home-features-item__desc">{feature.description}</p>
             </div>
-          </motion.li>
+          </li>
         ))}
-      </motion.ul>
-    </motion.section>
+      </ul>
+    </section>
   )
 }

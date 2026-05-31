@@ -42,6 +42,18 @@ const HOME_NAV_LINKS = [
     ],
   },
   {
+    id: 'faq',
+    label: 'SSS',
+    href: '/#sss',
+    active: false,
+    description: 'Sık sorulan sorular ve hızlı yanıtlar.',
+    items: [
+      { label: 'Başlangıç', href: '/#sss' },
+      { label: 'Veri saklama', href: '/#sss' },
+      { label: 'Dashboard', href: '/dashboard' },
+    ],
+  },
+  {
     id: 'dashboard',
     label: 'Dashboard',
     href: '/dashboard',

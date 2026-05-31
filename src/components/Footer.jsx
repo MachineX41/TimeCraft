@@ -7,33 +7,17 @@ const FOOTER_COLUMNS = [
       { label: 'Ana Sayfa', href: '/' },
       { label: 'Dashboard', href: '/dashboard' },
       { label: 'Özellikler', href: '/#ozellikler' },
-      { label: 'Hakkında', href: '/#hakkimizda' },
+      { label: 'SSS', href: '/#sss' },
     ],
   },
   {
-    title: 'Kaynaklar',
-    links: [
-      { label: 'Dokümantasyon', href: '#' },
-      { label: 'Yardım merkezi', href: '#' },
-      { label: 'API', href: '#' },
-      { label: 'SSS', href: '#' },
-    ],
-  },
-  {
-    title: 'Şirket',
+    title: 'Keşfet',
     links: [
       { label: 'Hakkında', href: '/#hakkimizda' },
-      { label: 'İletişim', href: '#' },
-      { label: 'Kariyer', href: '#' },
-      { label: 'Blog', href: '#' },
+      { label: 'Nasıl çalışır', href: '/#nasil-calisir' },
+      { label: 'Özellikler', href: '/#ozellikler' },
     ],
   },
-]
-
-const LEGAL_LINKS = [
-  { label: 'Gizlilik', href: '#' },
-  { label: 'Kullanım şartları', href: '#' },
-  { label: 'KVKK', href: '#' },
 ]
 
 export default function Footer() {
@@ -76,8 +60,8 @@ export default function Footer() {
                   <h3 className="site-footer__heading">{column.title}</h3>
                   <ul className="site-footer__list">
                     {column.links.map((link) => (
-                      <li key={link.label}>
-                        {link.href.startsWith('/#') || link.href.startsWith('http') ? (
+                      <li key={`${column.title}-${link.label}`}>
+                        {link.href.startsWith('/#') ? (
                           <a href={link.href} className="site-footer__link">
                             {link.label}
                           </a>
@@ -96,15 +80,6 @@ export default function Footer() {
 
           <div className="site-footer__bottom">
             <p className="site-footer__copy">© {year} TimeCraft. Tüm hakları saklıdır.</p>
-            <ul className="site-footer__legal">
-              {LEGAL_LINKS.map((link) => (
-                <li key={link.label}>
-                  <a href={link.href} className="site-footer__legal-link">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </div>
