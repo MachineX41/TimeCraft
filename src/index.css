@@ -1159,6 +1159,7 @@ a.app-navbar__cta {
   width: 100%;
   max-width: 40rem;
   margin: 0 auto;
+  transform: translateY(clamp(2.75rem, 8vh, 5.25rem));
 }
 
 .home-hero__brand {
@@ -3856,6 +3857,10 @@ a.app-navbar__cta {
     min-height: calc(100svh - var(--mobile-nav-h));
     padding-inline: 1rem;
     padding-block: 2rem;
+  }
+
+  .home-hero {
+    transform: translateY(clamp(1.5rem, 5.5vh, 2.75rem));
   }
 
   .home-hero__brand {
