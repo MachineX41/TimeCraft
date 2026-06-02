@@ -1,4 +1,5 @@
 import CtaButton from '../ui/CtaButton'
+import ShinyText from '../ui/ShinyText'
 import SparklesCore from '../ui/SparklesCore'
 
 const LEAD =
@@ -13,7 +14,20 @@ export default function HomeHero() {
       </div>
 
       <div className="home-hero">
-        <h1 className="home-hero__brand">TimeCraft</h1>
+        <h1 className="home-hero__brand">
+          <ShinyText
+            text="TimeCraft"
+            speed={2}
+            delay={0}
+            color="#ffffff"
+            shineColor="#bfbfbf"
+            spread={120}
+            direction="left"
+            yoyo={false}
+            pauseOnHover={false}
+            disabled={false}
+          />
+        </h1>
 
         <div className="home-hero__sparkles">
           <div className="home-hero__sparkles-line home-hero__sparkles-line--wide home-hero__sparkles-line--blur" />
