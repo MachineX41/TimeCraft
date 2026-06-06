@@ -13,7 +13,7 @@ Tek bir panelde net metrikler, anlık görünürlük ve sade bir dashboard deney
 [![Motion](https://img.shields.io/badge/Motion-12-FF4D9F?style=flat-square)](https://motion.dev)
 [![License](https://img.shields.io/badge/License-MIT-7C3AED?style=flat-square)](#lisans)
 
-[**Canlı Demo**](https://time-craft-two.vercel.app) · [**Kaynak**](https://github.com/MachineX41/TimeCraft) · [**Issues**](https://github.com/MachineX41/TimeCraft/issues)
+[**Kaynak**](https://github.com/MachineX41/TimeCraft) · [**Issues**](https://github.com/MachineX41/TimeCraft/issues)
 
 </div>
 
@@ -172,7 +172,7 @@ timecraft/
 │
 ├─ index.html                    # tema rengi + font preload
 ├─ vite.config.js                # React + Tailwind v4 plugin'leri
-├─ vercel.json                   # SPA rewrite kuralı
+├─ netlify.toml                  # Netlify build + SPA redirect
 └─ eslint.config.js              # ESLint flat config
 ```
 
@@ -253,16 +253,23 @@ Tailwind v4 utility'leri + özel BEM sınıfları hybrid yaklaşım. Renk paleti
 
 ## Dağıtım
 
-### Vercel (önerilen)
+### Netlify (önerilen)
 
-Repo'yu Vercel'e bağlamanız yeterli. `vercel.json` SPA rewrite kuralı içerir; build komutu otomatik olarak `npm run build`, çıktı dizini `dist/` algılanır.
+1. [Netlify](https://www.netlify.com) → **Add new site** → **Import an existing project**
+2. GitHub repo: `MachineX41/TimeCraft`
+3. Build ayarları `netlify.toml` içinden otomatik okunur:
+   - **Build command:** `npm run build`
+   - **Publish directory:** `dist`
+4. Deploy
+
+React Router için SPA yönlendirmesi `netlify.toml` içinde tanımlı (`/*` → `/index.html`, 200).
 
 ### Manuel statik hosting
 
 ```bash
 npm run build
-# dist/ klasörünü Netlify, Cloudflare Pages, GitHub Pages, S3 vb. herhangi bir
-# statik host servisine yükleyin. SPA fallback: /* → /index.html
+# dist/ klasörünü Netlify Drop, Cloudflare Pages, GitHub Pages, S3 vb. yükleyin.
+# SPA fallback: /* → /index.html (200)
 ```
 
 ---
