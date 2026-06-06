@@ -13,7 +13,7 @@ Tek bir panelde net metrikler, anlık görünürlük ve sade bir dashboard deney
 [![Motion](https://img.shields.io/badge/Motion-12-FF4D9F?style=flat-square)](https://motion.dev)
 [![License](https://img.shields.io/badge/License-MIT-7C3AED?style=flat-square)](#lisans)
 
-[**Kaynak**](https://github.com/MachineX41/TimeCraft) · [**Issues**](https://github.com/MachineX41/TimeCraft/issues)
+[**Canlı Demo**](https://classy-cendol-4b3532.netlify.app) · [**Kaynak**](https://github.com/MachineX41/TimeCraft) · [**Issues**](https://github.com/MachineX41/TimeCraft/issues)
 
 </div>
 
