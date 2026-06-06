@@ -5,184 +5,135 @@
 # TimeCraft
 
 **Freelancer ve bağımsız çalışanlar için zaman, ücret ve proje takibi.**
-Tek bir panelde net metrikler, anlık görünürlük ve sade bir dashboard deneyimi.
 
+Tek panelde net metrikler, anlık görünürlük ve sade bir dashboard deneyimi.
+
+[![Live Demo](https://img.shields.io/badge/demo-timecraftt.netlify.app-00C7B7?style=flat-square&logo=netlify&logoColor=white)](https://timecraftt.netlify.app)
 [![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white&style=flat-square)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white&style=flat-square)](https://vite.dev)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38BDF8?logo=tailwindcss&logoColor=white&style=flat-square)](https://tailwindcss.com)
 [![Motion](https://img.shields.io/badge/Motion-12-FF4D9F?style=flat-square)](https://motion.dev)
-[![License](https://img.shields.io/badge/License-MIT-7C3AED?style=flat-square)](#lisans)
 
-[**Canlı Demo**](https://timecraftt.netlify.app) · [**Kaynak**](https://github.com/MachineX41/TimeCraft) · [**Issues**](https://github.com/MachineX41/TimeCraft/issues)
+**[Canlı Demo](https://timecraftt.netlify.app)** · **[Kaynak Kod](https://github.com/MachineX41/TimeCraft)** · **[Issues](https://github.com/MachineX41/TimeCraft/issues)**
 
 </div>
 
 <br />
 
 <p align="center">
-  <img src="public/readme.png" alt="TimeCraft Dashboard önizlemesi" width="100%" />
+  <img src="public/readme.png" alt="TimeCraft dashboard önizlemesi" width="100%" />
 </p>
 
 ---
 
-## İçindekiler
+## Hakkında
 
-- [Genel Bakış](#genel-bakış)
-- [Öne Çıkan Özellikler](#öne-çıkan-özellikler)
-- [Teknoloji Yığını](#teknoloji-yığını)
-- [Hızlı Başlangıç](#hızlı-başlangıç)
-- [Kullanılabilir Komutlar](#kullanılabilir-komutlar)
-- [Proje Yapısı](#proje-yapısı)
-- [Veri Modeli](#veri-modeli)
-- [Mimari ve Tasarım Kararları](#mimari-ve-tasarım-kararları)
-- [Responsive ve Erişilebilirlik](#responsive-ve-erişilebilirlik)
-- [Dağıtım](#dağıtım)
-- [Yol Haritası](#yol-haritası)
-- [Katkı](#katkı)
-- [Lisans](#lisans)
+TimeCraft; freelancer ve bağımsız çalışanların proje, mesai ve ücret takibini **tek bir çalışma alanında** toplaması için geliştirilmiş bir web uygulamasıdır. Dağınık tablolar ve notlar yerine net metrikler, filtreleme, arama ve sade bir dashboard sunar.
 
----
+| | |
+|---|---|
+| **Canlı site** | [https://timecraftt.netlify.app](https://timecraftt.netlify.app) |
+| **Kaynak kod** | [github.com/MachineX41/TimeCraft](https://github.com/MachineX41/TimeCraft) |
+| **Hosting** | [Netlify](https://www.netlify.com) |
+| **Veri** | Tarayıcı `localStorage` — backend veya kayıt gerekmez |
 
-## Genel Bakış
+### Sayfalar
 
-TimeCraft, dağınık tablolar ve not defterleri yerine projelerinizi, çalışılan saatleri ve kazançları **tek bir cam panelde** birleştirir. Tüm veriler tarayıcıda lokal olarak tutulur — backend yok, kayıt yok, sürtünme yok.
-
-- **Ana sayfa** — landing deneyimi: özellikler, akış, SSS ve CTA bölümleri
-- **Dashboard** — proje listesi, hızlı metrikler ve kart/tablo görünümleri
-- **Proje çekmecesi** — masaüstünde sağdan kayan rail, mobilde bottom sheet
+- **`/`** — Landing: hero, metrikler, hakkında, özellikler, SSS, CTA
+- **`/dashboard`** — Proje listesi, KPI kartları, filtre/arama, proje çekmecesi
 
 ---
 
-## Öne Çıkan Özellikler
+## Öne çıkan özellikler
 
 | Alan | Açıklama |
 |------|----------|
-| **Proje yönetimi** | Ekle / düzenle / sil, durum yönetimi (Beklemede · Devam Ediyor · Tamamlandı) |
-| **Otomatik metrikler** | Toplam kazanç, çalışılan saat ve aktif iş sayısı canlı hesaplanır |
-| **Arama & filtre** | Hızlı arama + segmented control filtre çubuğu (4 sekme) |
-| **LocalStorage kalıcılık** | Tüm projeler tarayıcı üzerinde JSON olarak saklanır, doğrulamalı yükleme |
-| **Hareketli arayüz** | Motion ile sayfa geçişleri, reveal animasyonları ve interaktif CTA |
-| **Premium görsel dil** | Rotating conic-gradient border, glassmorphism navbar, contour-textured drawer |
-| **Tam responsive** | 3 breakpoint katmanı (mobile / tablet / desktop), safe-area + touch optimizasyonu |
-| **Erişilebilirlik** | Klavye navigasyonu, ARIA etiketleri, `prefers-reduced-motion` desteği |
+| **Proje yönetimi** | Oluştur, düzenle, sil · durum: Beklemede / Devam Ediyor / Tamamlandı |
+| **Canlı metrikler** | Toplam kazanç, mesai saati, aktif iş sayısı otomatik hesaplanır |
+| **Arama & filtre** | Segmented control + anlık proje/müşteri araması |
+| **Kalıcı veri** | `localStorage` ile JSON saklama, şema doğrulamalı yükleme |
+| **Animasyonlar** | Motion reveal, sayfa geçişleri, interaktif CTA border efektleri |
+| **Premium UI** | Glass navbar, BorderGlow paneller, topografik drawer dokusu |
+| **Responsive** | Mobil kart layout, bottom sheet drawer, tablet/desktop tablo |
+| **Erişilebilirlik** | ARIA, klavye navigasyonu, `prefers-reduced-motion` desteği |
 
 ---
 
-## Teknoloji Yığını
+## Teknoloji yığını
 
-- **[React 19](https://react.dev)** — UI çekirdeği
-- **[Vite 8](https://vite.dev)** — geliştirme sunucusu ve build aracı
-- **[React Router 7](https://reactrouter.com)** — sayfa yönlendirme
-- **[Tailwind CSS 4](https://tailwindcss.com)** — utility-first stil katmanı
-- **[Motion (Framer Motion)](https://motion.dev)** — animasyon motoru
-- **[tsParticles](https://particles.js.org)** — hero sparkles efekti
-- **ESLint 10** — kod kalitesi
+| Katman | Teknoloji |
+|--------|-----------|
+| UI | [React 19](https://react.dev) |
+| Build | [Vite 8](https://vite.dev) |
+| Routing | [React Router 7](https://reactrouter.com) |
+| Stil | [Tailwind CSS 4](https://tailwindcss.com) + özel BEM |
+| Animasyon | [Motion](https://motion.dev) |
+| Efektler | [tsParticles](https://particles.js.org) (hero sparkles) |
+| Lint | ESLint 10 |
+| Deploy | [Netlify](https://www.netlify.com) + `netlify.toml` |
 
-> Yerel asetler: `Google Sans` (variable font, GRAD/opsz/wght), `Zen Dots` ve TimeCraft özel `countours.svg` topografik dokusu.
+**Yerel asetler:** Google Sans (variable font), Zen Dots, `countours.svg` topografik doku
 
 ---
 
-## Hızlı Başlangıç
+## Hızlı başlangıç
 
 ### Gereksinimler
 
-- **Node.js 18.18+** veya **20+**
-- **npm 10+** (veya pnpm / yarn / bun)
+- Node.js **18.18+** veya **20+**
+- npm **10+** (pnpm / yarn / bun da kullanılabilir)
 
 ### Kurulum
 
 ```bash
-# repo'yu klonlayın
 git clone https://github.com/MachineX41/TimeCraft.git
 cd TimeCraft
-
-# bağımlılıkları yükleyin
 npm install
-
-# geliştirme sunucusunu başlatın (http://localhost:5173)
 npm run dev
 ```
 
-### Üretim için derleme
+Tarayıcıda: [http://localhost:5173](http://localhost:5173)
+
+### Build
 
 ```bash
-npm run build      # dist/ klasörüne üretir
-npm run preview    # üretim build'ini lokal önizleme
+npm run build    # dist/ üretir
+npm run preview  # production build önizleme
+npm run lint     # ESLint kontrolü
 ```
 
 ---
 
-## Kullanılabilir Komutlar
-
-| Komut | Açıklama |
-|-------|----------|
-| `npm run dev` | Vite geliştirme sunucusunu HMR ile başlatır |
-| `npm run build` | Üretim için optimize edilmiş build üretir (`dist/`) |
-| `npm run preview` | Üretim build'ini lokal preview sunucusunda çalıştırır |
-| `npm run lint` | ESLint ile tüm `.js/.jsx` dosyalarını kontrol eder |
-
----
-
-## Proje Yapısı
+## Proje yapısı
 
 ```
 timecraft/
-├─ public/                       # statik asetler (font, görsel, ikon)
-│  ├─ fonts/                     # Google Sans variable font
-│  ├─ timecraftlogo.svg          # marka logosu (favicon olarak da kullanılır)
-│  ├─ header.png, headerr.png    # dashboard/hero arka plan görselleri
-│  ├─ footer.png                 # footer için blurlu zemin
-│  └─ countours.svg              # drawer için topografik doku
-│
+├─ public/
+│  ├─ timecraftlogo.svg       # logo + favicon
+│  ├─ readme.png              # README önizleme görseli
+│  ├─ header.png, headerr.png # dashboard / hero arka plan
+│  ├─ footer.png              # footer zemin
+│  └─ countours.svg           # drawer doku
 ├─ src/
-│  ├─ App.jsx                    # router + route'lar arası geçiş animasyonu
-│  ├─ main.jsx                   # giriş noktası
-│  ├─ index.css                  # ana stil dosyası (Tailwind + özel BEM)
-│  │
-│  ├─ pages/
-│  │  ├─ Home.jsx                # landing — Hero / Metrics / About / Features / FAQ / CTA
-│  │  └─ Dashboard.jsx           # çalışma alanı — projeler + drawer
-│  │
-│  ├─ components/
-│  │  ├─ Navbar.jsx              # sticky glass navbar + hover mega menü
-│  │  ├─ Footer.jsx              # blurlu görsel zeminli footer
-│  │  ├─ PageHero.jsx            # dashboard üst banner
-│  │  ├─ MetricsRow.jsx          # toplam kazanç / saat / aktif iş kartları
-│  │  ├─ ProjectTable.jsx        # tablo (desktop) + kart (mobil) görünümü
-│  │  ├─ ProjectDrawer.jsx       # detay / düzenle / oluştur paneli (portal)
-│  │  ├─ WorkspaceFilterBar.jsx  # segmented control filtre + arama
-│  │  ├─ DeleteConfirmModal.jsx  # silme onayı modal'ı
-│  │  ├─ PageTransition.jsx      # route'lar arası fade animasyonu
-│  │  ├─ BorderGlow.jsx          # canvas tabanlı premium border efekti
-│  │  ├─ GradualBlur.jsx         # alt kademeli blur overlay
-│  │  ├─ home/                   # landing bölüm componentleri
-│  │  └─ ui/                     # küçük UI parçaları (CtaButton, Sparkles, RevealMotion, ColourfulText)
-│  │
-│  ├─ interfaces/
-│  │  └─ projectSchema.js        # tipler, statüler, mock veri, storage anahtarı
-│  │
-│  ├─ utils/
-│  │  ├─ projectStorage.js       # localStorage okuma/yazma + doğrulama
-│  │  ├─ projectStats.js         # KPI hesapları + para formatı (TRY)
-│  │  ├─ projectSearch.js        # arama fonksiyonu + placeholder metinleri
-│  │  └─ ctaButton.js            # CTA hover/animasyon yardımcısı
-│  │
-│  └─ constants/
-│     └─ workspaceBorderGlow.js  # BorderGlow ön ayarları
-│
-├─ index.html                    # tema rengi + font preload
-├─ vite.config.js                # React + Tailwind v4 plugin'leri
-├─ netlify.toml                  # Netlify build + SPA redirect
-└─ eslint.config.js              # ESLint flat config
+│  ├─ pages/                  # Home, Dashboard
+│  ├─ components/             # Navbar, Footer, ProjectTable, ProjectDrawer…
+│  │  ├─ home/                # landing bölümleri
+│  │  └─ ui/                  # CtaButton, SparklesCore, ShinyText, RevealMotion
+│  ├─ interfaces/             # projectSchema, mock veri
+│  ├─ utils/                  # storage, stats, search
+│  └─ constants/              # BorderGlow ayarları
+├─ netlify.toml               # Netlify build + SPA redirect
+├─ vite.config.js
+└─ index.html
 ```
 
 ---
 
-## Veri Modeli
+## Veri modeli
 
-Tüm projeler `localStorage` içinde `timecraft-projects` anahtarı altında JSON olarak saklanır. Sıfır kayıt durumunda mock projeler yüklenir.
+Projeler `localStorage` anahtarı `timecraft-projects` altında saklanır. İlk açılışta örnek projeler yüklenir.
 
-```jsonc
+```json
 {
   "id": "proj-001",
   "clientName": "Nova Digital",
@@ -190,127 +141,79 @@ Tüm projeler `localStorage` içinde `timecraft-projects` anahtarı altında JSO
   "hourlyRate": 850,
   "hoursWorked": 24,
   "status": "Devam Ediyor",
-  "about": "E-ticaret vitrininin yeniden tasarımı…",
+  "about": "Proje açıklaması…",
   "createdAt": "2026-04-12T09:00:00.000Z"
 }
 ```
 
-**Durumlar** — `Beklemede` · `Devam Ediyor` · `Tamamlandı`
-**Kazanç** — `hourlyRate × hoursWorked` (TRY, Intl.NumberFormat ile biçimlenir)
-
-> Veri şeması ve yardımcılar: [`src/interfaces/projectSchema.js`](src/interfaces/projectSchema.js) ve [`src/utils/projectStorage.js`](src/utils/projectStorage.js)
+- **Durumlar:** `Beklemede` · `Devam Ediyor` · `Tamamlandı`
+- **Kazanç:** `hourlyRate × hoursWorked` (TRY)
 
 ---
 
-## Mimari ve Tasarım Kararları
+## Dağıtım (Netlify)
 
-### Routing & Sayfa Geçişleri
+Proje [Netlify](https://www.netlify.com) üzerinde yayında: **[timecraftt.netlify.app](https://timecraftt.netlify.app)**
 
-`react-router-dom` v7 ile tek `<BrowserRouter>` altında iki route. `PageTransition` componenti, `AnimatePresence mode="wait"` ile sayfalar arası **opacity fade** sağlar. Geçişte scroll en üste alınır.
+`netlify.toml` build ayarlarını ve React Router SPA yönlendirmesini içerir:
 
-### State Yönetimi
+```toml
+[build]
+  command = "npm run build"
+  publish = "dist"
 
-Global state kütüphanesi yok — `App.jsx` içindeki üst seviye state, prop drilling ile `Dashboard`'a iner. `useCallback` ile referans stabilitesi korunur, `useEffect` yan etkileri minimumdur.
-
-### Drawer (Proje Paneli)
-
-`createPortal` ile `document.body`'ye render edilir. Masaüstünde sağdan kayan **CS:GO 2 tarzı dar rail + hover/açık genişleme** paterni; mobilde tam ekran **bottom sheet** (88dvh, drag handle, safe-area aware).
-
-### Animasyon Stratejisi
-
-- **Sayfa girişi:** `RevealMotion` yardımcıları (`revealBlock`, `revealLine`, `revealList`) — `cubic-bezier(0.22, 1, 0.36, 1)` ease
-- **CTA butonu:** `conic-gradient` rotating border (4s linear) + hover'da `cta-fill` animasyonu (1.05s spring-easing)
-- **Filtre pill:** `motion.span` `layoutId` ile spring transition
-- **Tüm animasyonlar** `prefers-reduced-motion` ile devre dışı bırakılır
-
-### Stil Stratejisi
-
-Tailwind v4 utility'leri + özel BEM sınıfları hybrid yaklaşım. Renk paleti `--color-rim-1..5` CSS custom property'leri ile yönetilir. Glassmorphism (`backdrop-filter: blur + saturate`) ve `@supports` fallback'leri mevcuttur.
-
----
-
-## Responsive ve Erişilebilirlik
-
-### Breakpoint Katmanları
-
-| Genişlik | Hedef | Davranış |
-|----------|-------|----------|
-| `≤ 767px` | Telefon | Compact navbar (3.5rem), bottom sheet drawer, kart layout, segmented filter |
-| `768–1023px` | Tablet | Mega menü açık, navbar nefes alır, drawer rail aktif |
-| `≥ 1024px` | Masaüstü | Tam tablo, geniş hero, mega menü hover |
-
-### Erişilebilirlik
-
-- Semantic HTML (`<header>`, `<nav>`, `<main>`, `<dialog>`, `<aside>`)
-- Tüm interaktif elementlerde `aria-*` etiketleri ve klavye desteği
-- Focus halkaları (`outline: 2px solid rgb(0 166 244 / 0.55)`)
-- `prefers-reduced-motion` ile animasyon kapatma
-- Min 44px dokunma alanı (Apple HIG)
-- iOS zoom önleyici input `font-size: 1rem`
-- `env(safe-area-inset-bottom)` ile notch/home indicator desteği
-
----
-
-## Dağıtım
-
-### Netlify (önerilen)
-
-1. [Netlify](https://www.netlify.com) → **Add new site** → **Import an existing project**
-2. GitHub repo: `MachineX41/TimeCraft`
-3. Build ayarları `netlify.toml` içinden otomatik okunur:
-   - **Build command:** `npm run build`
-   - **Publish directory:** `dist`
-4. Deploy
-
-React Router için SPA yönlendirmesi `netlify.toml` içinde tanımlı (`/*` → `/index.html`, 200).
-
-### Manuel statik hosting
-
-```bash
-npm run build
-# dist/ klasörünü Netlify Drop, Cloudflare Pages, GitHub Pages, S3 vb. yükleyin.
-# SPA fallback: /* → /index.html (200)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 ```
 
+### Yeni deploy kurulumu
+
+1. Netlify → **Add new site** → **Import an existing project**
+2. GitHub: `MachineX41/TimeCraft`
+3. Ayarlar `netlify.toml`'dan otomatik okunur → **Deploy**
+
+> **GitHub About alanı:** Repo sayfasında sağ üst **⚙️ About → Edit** → Website alanına `https://timecraftt.netlify.app` yazın. Eski Vercel linki burada kalıyorsa bu adımdan güncellenir.
+
 ---
 
-## Yol Haritası
+## Responsive
 
-- [ ] Çoklu kullanıcı / bulut senkronizasyonu (opsiyonel auth)
-- [ ] Aylık / haftalık rapor görünümü ve PDF export
-- [ ] Fatura taslakları + müşteriye gönderme
-- [ ] Zaman takibi (start/stop timer) entegrasyonu
-- [ ] i18n — İngilizce dil desteği
-- [ ] Açık tema seçeneği
+| Breakpoint | Davranış |
+|------------|----------|
+| ≤ 767px | Kompakt navbar, kart layout, bottom sheet drawer |
+| 768–1023px | Tablet layout, drawer rail |
+| ≥ 1024px | Tam tablo, mega menü, geniş hero |
+
+---
+
+## Yol haritası
+
+- [ ] Bulut senkronizasyonu / opsiyonel auth
+- [ ] Haftalık / aylık rapor + PDF export
+- [ ] Fatura taslakları
+- [ ] Start/stop zaman takibi
+- [ ] İngilizce dil desteği
+- [ ] Açık tema
 
 ---
 
 ## Katkı
 
-Pull request'ler ve issue'lar memnuniyetle karşılanır. Büyük değişiklikler için önce bir issue açarak ne yapmak istediğinizi tartışmanız önerilir.
+Issue ve pull request'ler memnuniyetle karşılanır.
 
 ```bash
-# yeni bir feature branch açın
 git checkout -b feat/yeni-ozellik
-
-# kod stili
 npm run lint
-
-# commit + push + PR
-git commit -m "feat: yeni özellik açıklaması"
+git commit -m "feat: açıklama"
 git push origin feat/yeni-ozellik
 ```
 
 ---
 
-## Lisans
-
-Bu proje [MIT lisansı](LICENSE) altında dağıtılmaktadır.
-
----
-
 <div align="center">
 
-**TimeCraft** — Made with care for freelancers.
+**[timecraftt.netlify.app](https://timecraftt.netlify.app)** · Made for freelancers
 
 </div>
